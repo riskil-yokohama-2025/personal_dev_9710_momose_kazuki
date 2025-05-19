@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>掲示板詳細</title>
+</head>
+<body>
+	<table>
+		<tr>
+			<th>「[[${thread.title}]]」</th>
+			<td>カテゴリ：[[${thread.categoryId}]]</td>
+			<td>作成者：</td>
+			<td>スレッド作成日：</td>
+			<td>最終更新時間：</td>
+			<td>内容：[[${thread.body}]]</td>
+		</tr>
+	</table>
+	<br>
+	<form>
+		<button>コメント投稿</button>
+	</form>
+	<table>
+		<tr th:each="comment:${commentDbDate}">
+			<td>[[${comment.name}]]</td>
+			<td>[[${comment.body}]]</td>
+			<td th:if="${comment.id == thread.id}">編集</td>
+		</tr>
+	</table>
+
+</body>
+</html>
