@@ -57,6 +57,41 @@ public class Guest {
 	public Guest() {
 	}
 
+	
+//	public Guest(String email, String password, String oldPassword, String name, Boolean banFlag, Integer createUserId,
+//			LocalDateTime createDate, Integer updateUserId, LocalDateTime updateDate, Boolean deleteFlag) {
+//		this.email = email;
+//		this.password = password;
+//		this.oldPassword = oldPassword;
+//		this.name = name;
+//		this.banFlag = banFlag;
+//		this.createUserId = createUserId;
+//		this.createDate = createDate;
+//		this.updateUserId = updateUserId;
+//		this.updateDate = updateDate;
+//		this.deleteFlag = deleteFlag;
+//	}
+
+	//ログイン用
+	public Guest(String email, String password) {
+		this.email = email;
+		this.password = password;
+	}
+
+	
+
+	//新規登録用
+	public Guest(String email, String password, String name) {
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.banFlag = false;
+		this.createUserId = 1;
+		this.createDate = LocalDateTime.now();
+		this.deleteFlag = false;
+	}
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -145,6 +180,6 @@ public class Guest {
 		this.deleteFlag = deleteFlag;
 	}
 
-	
+
 
 }

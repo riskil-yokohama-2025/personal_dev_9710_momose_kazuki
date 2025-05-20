@@ -62,7 +62,16 @@ public class Comment {
 		this.deleteFlag = deleteFlag;
 	}
 
-
+	//新規作成用
+	public Comment(Integer threadId, Integer userId, String body) {
+		this.threadId = threadId;
+		this.userId = userId;
+		this.body = body;
+		this.createUserId = 1;
+		this.createDate = LocalDateTime.now();
+		this.updateUserId = 1;
+		this.deleteFlag = false;
+	}
 
 	public Integer getId() {
 		return id;

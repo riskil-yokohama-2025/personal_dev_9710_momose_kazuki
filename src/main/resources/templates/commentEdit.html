@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>コメント編集</title>
+</head>
+<body>
+	<!-- ヘッダ -->
+	<span th:replace="header"></span>
+	
+	<h4>コメント編集</h4>
+	<form method="post" th:action="|/comment/${comment.id}/edit|">
+		<table border="1">
+			<tr>
+				<th>内容</th>
+				<td><textarea name="body">[[${comment.body}]]</textarea></td>
+			</tr>
+		</table>
+		<button>コメント編集</button>
+	</form>
+	<form method="post" th:action="|/comment/${comment.id}/delete|">
+		<button>コメント削除</button>
+	</form>
+</body>
+</html>

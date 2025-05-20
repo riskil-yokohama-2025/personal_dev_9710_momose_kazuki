@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>新規登録</title>
+</head>
+<body>
+
+	<span th:replace="headerLogin"></span>
+
+	<main>
+		<!--中央-->
+		<h3>ユーザー新規登録</h3>
+	
+		<ul th:if="${errorList != null && errorList.size > 0}">
+			<li th:each="error : ${errorList}">
+					[[${error}]]
+			</li>
+		</ul>
+		
+		<form method="post" action="/user/join">
+			<table>	
+				<tr>
+					<td><input type="text" name="name" placeholder="ニックネーム（20文字以内）"></td>
+				</tr>
+				<tr>
+					<td><input type="text" name="email" placeholder="メールアドレス"></td>
+				</tr>
+				<tr>
+					<td><input type="password" name="password" placeholder="パスワード（20文字以内）"></td>
+				</tr>
+				<tr>
+					<td><input type="password" name="passwordConfirm" placeholder="パスワード（確認）"></td>
+				</tr>
+			</table>
+			<button>新規登録</button>
+			
+		</form>
+		
+	</main>
+	
+</body>
+</html>

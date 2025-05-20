@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>コメント投稿</title>
+</head>
+<body>
+	<!-- ヘッダ -->
+	<span th:replace="header"></span>
+	
+	<h4>コメント投稿</h4>
+	<form method="post" th:action="|/comment/${thread.id}/add|">
+		<table border="1">
+			<tr>
+				<th>内容</th>
+				<td><textarea name="body"></textarea></td>
+			</tr>
+		</table>
+		<button>コメント投稿</button>
+	</form>
+</body>
+</html>

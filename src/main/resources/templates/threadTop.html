@@ -7,8 +7,17 @@
 <body>
 	<!--  -->
 	<!-- ヘッダ -->
+	<span th:replace="header"></span>
 	
 	<!-- ナビ -->
+	<span th:replace="navThread"></span>
+	
+	<!-- 絞り込みリンク -->
+	<a href="/thread">全て</a>
+
+	<th:block th:each="category:${categoryList}">
+		<a th:href="|/thread?categoryId=${category.id}|">[[${category.name}]]</a>
+	</th:block>
 	
 	<!-- ソート類 -->
 	

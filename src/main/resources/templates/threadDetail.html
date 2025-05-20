@@ -5,6 +5,9 @@
 	<title>掲示板詳細</title>
 </head>
 <body>
+	<!-- ヘッダ -->
+	<span th:replace="header"></span>
+	
 	<table>
 		<tr>
 			<th>「[[${thread.title}]]」</th>
@@ -15,15 +18,20 @@
 			<td>内容：[[${thread.body}]]</td>
 		</tr>
 	</table>
+	
 	<br>
-	<form>
+	
+	<form method="get" th:action="|/comment/${thread.id}/add|">
 		<button>コメント投稿</button>
 	</form>
+	
 	<table>
 		<tr th:each="comment:${commentDbDate}">
-			<td>[[${comment.name}]]</td>
+			<td>[${comment.name}]]</td>
 			<td>[[${comment.body}]]</td>
-			<td th:if="${comment.id == thread.id}">編集</td>
+			<td th:if="${comment.userId == @guestModel.id}">
+				<a th:href="|/comment/${comment.id}/edit|">編集</a>
+			</td>
 		</tr>
 	</table>
 

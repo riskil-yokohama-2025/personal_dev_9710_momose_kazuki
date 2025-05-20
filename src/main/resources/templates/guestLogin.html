@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>ログイン</title>
+</head>
+<body>
+	<span th:replace="headerLogin"></span>
+
+	<main>
+		
+		<!--中央-->
+		<h3>ログイン</h3>
+		
+		<ul th:if="${errorList != null && errorList.size > 0}">
+			<li th:each="error : ${errorList}">
+					[[${error}]]
+			</li>
+		</ul>
+		
+		<form method="post" action="/login">
+			<table>			
+				<tr>
+					<td><input type="text" name="email" placeholder="メールアドレス"></td>
+				</tr>
+				<tr>
+					<td><input type="password" name="password" placeholder="パスワード"></td>
+				</tr>
+			</table>
+			<button>ログイン</button>
+			
+		</form>
+		
+		<a href="/user/join">ユーザー新規作成</a>
+		
+	</main>
+
+</body>
+</html>
