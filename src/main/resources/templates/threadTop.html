@@ -22,40 +22,41 @@
 	<!-- ソート類 -->
 	
 	<!-- 一覧 -->
+	<p th:if="${threadDisplay == null || threadDisplay.size() == 0}">投稿されたスレッドはありません</p>
 	
-	<table border="1">
-		<tr th:each="thread : ${threadList}">
-			<th rowspan="4"><a href="">[[${thread.title}]]</a></th>			
+	<table border="1" th:if="${threadDisplay != null && threadDisplay.size() > 0}">
+		<tr th:each="thread : ${threadDisplay}">
+			<th rowspan="4"><a href="|/thread/${thread.id}/detail|">[[${thread.title}]]</a></th>			
 
-			<td align="right">[[${thread.categoryId}]]</td>
+			<td align="right">[[${thread.categoryName}]]</td>
 
-			<td align="right">作成者：</td>
+			<td align="right">作成者：[[${thread.creator}]]</td>
 
-			<td align="right">最終更新時間：</td>
+			<td align="right">最終更新時間：[[${thread.createDate}]]</td>
 		</tr>
 		
 	</table>
 	
-	<table border="1">
-		<th:block th:each="thread : ${threadList}">
+	<table border="1" th:if="${threadDisplay != null && threadDisplay.size() > 0}">
+		<th:block th:each="thread : ${threadDisplay}">
 		
 		<tr>
 			<th rowspan="4"><a th:href="|/thread/${thread.id}/detail|">[[${thread.title}]]</a></th>			
 		</tr>
 		<tr>
-			<td align="right">[[${thread.categoryId}]]</td>
+			<td align="right">[[${thread.categoryName}]]</td>
 		</tr>
 		<tr>
 			<!-- Userで、SQL文検索 -->
 			<!-- 　→ User で、IDによって絞る -->
 			<!-- 　　→ nameの取得 -->
-			<td align="right">作成者：</td>
+			<td align="right">作成者：[[${thread.creator}]]</td>
 		</tr>
 		<tr>
 			<!-- 更新時間→　Comment で、SQL文検索 -->
 			<!-- 　→ IDで絞る -->
 			<!-- 　　→ Max 関数で最新時間の取得 -->
-			<td align="right">最終更新時間：</td>
+			<td align="right">最終更新時間：[[${thread.createDate}]]</td>
 		</tr>
 		</th:block>
 		

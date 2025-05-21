@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Myコメント一覧</title>
+</head>
+<body>
+	<!-- ヘッダ -->
+	<span th:replace="header"></span>
+
+	<!-- ナビ -->
+	<span th:replace="navThread"></span>
+
+	<main>
+		<h4>投稿したコメント</h4>
+		
+		<!--ソート(更新順)を追加-->
+<!--		<a href="/comment?sort=createDateAsc">更新順</a>-->
+		
+		<table border="1" th:each="comment:${commentList}">
+			<tr>
+				<!--自分のコメント内容表示-->
+				<th>[[${comment.body}]]</th>
+				<!--編集リンク-->
+				<td>
+					<a th:href="|/comment/${comment.id}/edit|">編集</a>
+				</td>
+			</tr>
+			<tr>
+				<!--コメントしたスレッドの表示-->
+				<!-- スレッド名の表示 -->
+				<td>
+					<a th:href="|/thread/${comment.threadId}/detail|"></a>
+				</td>
+				<!--コメント日時表示-->
+				<td>コメント日時：[[${comment.createDate}]]</td>
+			</tr>
+			<br>
+		</table>	
+
+</body>
+</html>

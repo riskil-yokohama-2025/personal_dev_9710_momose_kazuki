@@ -1,5 +1,8 @@
 package com.example.demo.controller;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,12 @@ public class CommentController {
 	public String add(
 			@PathVariable(name="id")Integer id,
 			Model model) {
+		
+		//ログインしてない時のアクセス不可
+		if(guestModel.getId() == null) {
+			return "redirect:/";
+		}
+		
 		
 		//データ取得
 		Optional<Thread> dbDate = threadRepository.findById(id);
@@ -78,6 +87,12 @@ public class CommentController {
 	public String edit(
 			@PathVariable(name="id")Integer id,
 			Model model) {
+		
+		//ログインしてない時のアクセス不可
+		if(guestModel.getId() == null) {
+			return "redirect:/";
+		}
+		
 		
 		//データ取得
 		Optional<Comment> commentDbDate = commentRepository.findById(id);
@@ -137,6 +152,7 @@ public class CommentController {
 			
 			//DB更新
 			comment.setBody(body);
+			comment.setUpdateDate(LocalDateTime.now());
 			commentRepository.save(comment);
 			
 			return "redirect:/thread/" + threadId + "/detail";
@@ -170,5 +186,24 @@ public class CommentController {
 			commentRepository.deleteById(id);
 		}
 		return "redirect:/thread/" + threadId + "/detail";
+	}
+	
+	
+	//自分のコメント一覧表示
+	@GetMapping("/comment")
+	public String index(Model model) {
+		
+		//ログインしてない時のアクセス不可
+		if(guestModel.getId() == null) {
+			return "redirect:/";
+		}
+		
+		Integer guestId = guestModel.getId();
+		List<Comment> commentList = new ArrayList<Comment>();
+		commentList = commentRepository.findByGuestId(guestId);
+		model.addAttribute("commentList", commentList);
+		
+		
+		return "commentMyPage";
 	}
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>スレッド変更</title>
+</head>
+
+<body>
+	<!-- ヘッダ -->
+	<span th:replace="header"></span>
+
+	<!-- ナビ -->
+	<span th:replace="navThread"></span>
+
+	<main>
+		<h4>スレッド変更</h4>
+		
+		<ul th:if="${errorList != null && errorList.size() > 0}">
+			<li th:each="error : ${errorList}" style="color: red;">[[${error}]]</li>
+		</ul>
+		
+		<form method="post" th:action="|/thread/${thread.id}/edit|">
+			<table border="1">
+				<tr>
+					<th>カテゴリー</th>
+					<td>
+						<label th:each="category:${categoryList}">
+							<input type="radio" name="categoryId" th:value="${category.id}">[[${category.name}]]&nbsp;
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<th>タイトル<br>※255文字まで</th>
+					<td><input type="text" name="title" th:value="${thread.title}"></td>
+				</tr>
+				<tr>
+					<th>内容</th>
+					<td><textarea name="body">[[${thread.body}]]</textarea></td>
+				</tr>
+			</table>
+			<button>変更</button>
+		</form>
+	</main>
+
+</body>
+
+</html>

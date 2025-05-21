@@ -53,28 +53,29 @@ public class Thread {
 	public Thread() {
 	}
 
-	public Thread(Integer categoryId, Integer userId, String title, String body, Integer createUserId,
-			LocalDateTime createDate, Integer updateUserId, LocalDateTime updateDate, Boolean deleteFlag) {
-		this.categoryId = categoryId;
-		this.userId = userId;
-		this.title = title;
-		this.body = body;
-		this.createUserId = createUserId;
-		this.createDate = createDate;
-		this.updateUserId = updateUserId;
-		this.updateDate = updateDate;
-		this.deleteFlag = deleteFlag;
-	}
+//	public Thread(Integer categoryId, Integer userId, String title, String body, Integer createUserId,
+//			LocalDateTime createDate, Integer updateUserId, LocalDateTime updateDate, Boolean deleteFlag) {
+//		this.categoryId = categoryId;
+//		this.userId = userId;
+//		this.title = title;
+//		this.body = body;
+//		this.createUserId = createUserId;
+//		this.createDate = createDate;
+//		this.updateUserId = updateUserId;
+//		this.updateDate = updateDate;
+//		this.deleteFlag = deleteFlag;
+//	}
 
 
-	public Thread(Integer categoryId, Integer userId, String title, String body,
-			LocalDateTime createDate) {
+	public Thread(Integer categoryId, Integer userId, String title, String body) {
 		this.categoryId = categoryId;
 		this.userId = userId;
 		this.title = title;
 		this.body = body;
 		this.createUserId = 1;
 		this.createDate = LocalDateTime.now();
+		this.updateUserId = 1;
+		this.deleteFlag = false;
 	}
 
 	public Integer getId() {

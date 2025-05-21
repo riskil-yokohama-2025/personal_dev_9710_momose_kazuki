@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>スレッドを新規作成</title>
+</head>
+<body>
+	<!-- ヘッダ -->
+	<span th:replace="header"></span>
+
+	<!-- ナビ -->
+	<span th:replace="navThread"></span>
+
+	<h4>スレッドを作成</h4>
+	
+	<ul th:if="${errorList != null && errorList.size() > 0}">
+		<li th:each="error : ${errorList}" style="color: red;">[[${error}]]</li>
+	</ul>
+	
+	<form method="post" action="/thread/add">
+		<table border="1">
+			
+			<tr>
+				<th>カテゴリー</th>
+				<td>
+					
+					<label th:each="category:${categoryList}">
+						<input type="radio" name="categoryId" th:value="${category.id}">[[${category.name}]]&nbsp;
+					</label>
+				</td>
+			</tr>
+			<tr>
+				<th>タイトル<br>※255文字まで</th>
+				<td><input type="text" name="title"></td>
+			</tr>
+			<tr>
+				<th>内容</th>
+				<td><textarea name="body"></textarea></td>
+			</tr>
+		</table>
+		<button>新規作成</button>
+	</form>
+</body>
+</html>
+
+<!--<td>-->
+<!--	<input type="radio" name="genre" value="1" id="genre_1">-->
+<!--	<label for="genre_1">資料請求</label><br>-->
+<!--	ラベルを付けてあげると、文字選択もできるようになる-->
+<!--	<input type="radio" name="genre" value="2" id="genre_2">-->
+<!--	<label for="genre_2">見積り依頼</label>-->
+<!--</td>-->
+
+<!--<td>-->
+<!--	<label th:each="category:${categoryList}">-->
+<!--		<input type="radio" name="categoryId" th:value="${category.id}">[${category.name}]]&nbsp;-->
+<!--	</label>-->
+<!--</td>-->

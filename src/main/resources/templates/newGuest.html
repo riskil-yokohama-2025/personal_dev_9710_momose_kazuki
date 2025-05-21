@@ -13,7 +13,7 @@
 		<h3>ユーザー新規登録</h3>
 	
 		<ul th:if="${errorList != null && errorList.size > 0}">
-			<li th:each="error : ${errorList}">
+			<li th:each="error : ${errorList}" style="color: red;">
 					[[${error}]]
 			</li>
 		</ul>

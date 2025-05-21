@@ -9,9 +9,18 @@ import com.example.demo.entity.Thread;
 
 public interface ThreadRepository extends JpaRepository<Thread, Integer>{
 
+	//カテゴリIDによる絞り込み
 	@Query(value=""
 			+"SELECT * "
 			+"FROM thread "
 			+"WHERE category_id = ?1", nativeQuery = true)
 	List<Thread> findByCategoryId(Integer categoryId);
+	
+	
+	//ゲストIDによる絞り込み
+	@Query(value=""
+			+"SELECT * "
+			+"FROM thread "
+			+"WHERE user_id = ?1", nativeQuery = true)
+	List<Thread> findByGuestId(Integer userId);
 }

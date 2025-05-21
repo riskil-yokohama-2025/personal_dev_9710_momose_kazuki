@@ -16,4 +16,10 @@ public interface GuestRepository extends JpaRepository<Guest, Integer>{
 			+ "  AND password = ?2", nativeQuery = true)
 	Optional<Guest> findByEmailAndPassword(String email, String password);
 
+	
+	// id によるゲスト名の検索
+	@Query(value="SELECT name "
+			+ "FROM guest "
+			+ "WHERE id = ?1", nativeQuery = true)
+	String serchNameById(Integer userId);
 }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>作成したスレッド</title>
+</head>
+
+<body>
+
+	<!-- ヘッダ -->
+	<span th:replace="header"></span>
+
+	<!-- ナビ -->
+	<span th:replace="navThread"></span>
+	
+	<main>
+		<h4>作成したスレッド</h4>
+
+		<!--  -->
+		<!-- プルダウン -->
+		
+		<p th:if="${threadList == null || threadList.size() == 0}">
+			自分が投稿したスレッドはありません
+		</p>
+		
+		<table border="1" th:if="${threadList != null && threadList.size() > 0}">
+			<tr>
+				<th>投稿時間</th>
+				<th>タイトル</th>
+				<th>カテゴリー</th>
+				<th>変更</th>
+				<th>削除</th>
+			</tr>
+			<tr th:each="thread : ${threadList}">
+				<td>[[${thread.updateDate}]]</td>
+				<td>[[${thread.title}]]</td>
+				<!--  -->
+				<!-- カテゴリー内容 -->
+				<td>[[${thread.categoryId}]]</td>
+				<td>
+					<!--  -->
+					<!-- 変更リンク -->
+					<a th:href="|/thread/${thread.id}/edit|"><button>変更</button></a>
+				</td>
+				<td>
+					<!--  -->
+					<!-- 削除リンク -->
+					<form method="post" th:action="|/thraed/${thread.id}/delete|">
+						<button>削除</button>
+					</form>
+				</td>
+			</tr>
+		</table>
+
+	</main>
+</body>
+
+</html>

@@ -32,5 +32,12 @@ public interface CommentRepository extends JpaRepository<Comment, Integer>{
 			+"SELECT * FROM comment " 
 			+"WHERE thread_id = ?", nativeQuery = true)
 	List<Comment> findByThreadComment(Integer id);
+	
+	
+	//ゲストIDによる絞り込み
+	@Query(value=""
+			+"SELECT * FROM comment " 
+			+"WHERE user_id = ?", nativeQuery = true)
+	List<Comment> findByGuestId(Integer userId);
 }
 
