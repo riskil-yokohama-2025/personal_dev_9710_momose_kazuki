@@ -22,4 +22,11 @@ public interface GuestRepository extends JpaRepository<Guest, Integer>{
 			+ "FROM guest "
 			+ "WHERE id = ?1", nativeQuery = true)
 	String serchNameById(Integer userId);
+	
+	
+	// id によるパスワードの検索
+	@Query(value="SELECT password "
+			+ "FROM guest "
+			+ "WHERE id = ?1", nativeQuery = true)
+	String findPasswordById(Integer id);
 }

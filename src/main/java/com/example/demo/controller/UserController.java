@@ -114,10 +114,10 @@ public class UserController {
 		//エラー
 		//名前
 		if (name == null || name.equals("")) {
-			errorList.add("名前は必須です");
+			errorList.add("ニックネームは必須です");
 		}
 		else if (name.length() > 20) {
-			errorList.add("名前は20文字以内です");
+			errorList.add("ニックネームは20文字以内です");
 		}
 //		else {
 //			guest.setName(name);
@@ -126,6 +126,8 @@ public class UserController {
 		//メール
 		if (email == null || email.length() == 0) {
 			errorList.add("メールアドレスは必須です");
+		}else if (email.length() > 50) {
+			errorList.add("メールアドレスは50文字以内にしてください");
 		}
 		
 		//パスワード
@@ -135,8 +137,11 @@ public class UserController {
 		else if (password.length() > 20) {
 			errorList.add("パスワードは20文字以内です");
 		}
-		else if(!password.equals(passwordConfirm)) {
+		
+		else {
+			if(!password.equals(passwordConfirm)) {
 			errorList.add("パスワードが一致しませんでした");
+			}
 		}
 		
 		if(errorList.size() > 0 ) {

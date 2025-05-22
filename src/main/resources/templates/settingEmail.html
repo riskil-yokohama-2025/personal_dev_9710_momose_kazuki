@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ユーザー設定</title>
+</head>
+<body>
+	<!--ヘッダー-->
+	<span th:replace="header"></span>
+	<hr>
+
+	<main>
+		<!--ナビ-->
+		<span th:replace="navSettingAccount"></span>
+		<hr>
+
+		<h4>メールアドレス変更</h4>
+		
+		<!-- エラー用ナビ -->
+		<span th:replace="navError"></span>
+		
+		<!--メールアドレス変更フォーム-->
+		<form method="post" action="/user/setting/email">
+			<table border="1">
+				<tr>
+					<th>メールアドレス</th>
+					<td>
+						<input type="text" name="email" th:value="${guest.email}">
+					</td>
+				</tr>
+			</table>
+			
+			<button>変更</button>
+		</form>
+		
+	</main>
+
+</body>
+</html>

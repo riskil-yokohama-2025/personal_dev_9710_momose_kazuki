@@ -23,14 +23,14 @@
 			<tr>
 				<th>カテゴリー</th>
 				<td>
-					
 					<label th:each="category:${categoryList}">
-						<input type="radio" name="categoryId" th:value="${category.id}">[[${category.name}]]&nbsp;
+						<input type="radio" name="categoryId" th:value="|${category.id}|" th:checked="|${category.id == 1}|">[[${category.name}]]&nbsp;
+<!--						input タグの中で if 文で「categoryId = 1」ならchecked を入れる？	-->
 					</label>
 				</td>
 			</tr>
 			<tr>
-				<th>タイトル<br>※255文字まで</th>
+				<th>タイトル<br>※100文字まで</th>
 				<td><input type="text" name="title"></td>
 			</tr>
 			<tr>

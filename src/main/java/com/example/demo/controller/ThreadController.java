@@ -131,26 +131,6 @@ public class ThreadController {
 		return "threadDetail";
 	}
 
-	
-//	String name = guestRepository.serchNameById(thread.getUserId());
-//	model.addAttribute("name", name);
-//
-//	List<Comment> commentList = new ArrayList<>();
-//	commentList = commentRepository.findByThreadId(id);
-//
-//	List<CommentIndex> indexList = new ArrayList<>();
-//	for (Comment comment : commentList) {
-//		indexList.add(new CommentIndex(
-//				comment.getId(),
-//				comment.getUserId(),
-//				guestRepository.serchNameById(comment.getUserId()),
-//				comment.getBody()));
-//	}
-//
-//	model.addAttribute("indexList", indexList);
-//
-//	return "detail";
-//}
 
 
 	//＝＝新規スレッド作成＝＝
@@ -258,7 +238,7 @@ public class ThreadController {
 	
 	
     //＝＝ 更新 ＝＝
-    //更新ボタンを押したとき、itemsテーブルにデータを更新する
+    //更新ボタンを押したとき、テーブルのデータを更新する
     // ＊一連の流れ＊
         //1. 更新対象のデータを取得
         //2. 更新予定のデータが存在するか確認
@@ -353,23 +333,4 @@ public class ThreadController {
 		
 		return "redirect:/thread/mythread";
 	}
-	
-	//＝＝投稿したコメントを一覧表示＝＝
-	
-	
-
-//	@PostMapping("/items/{id}/delete")
-//	public String delete(
-//			@PathVariable(name="id") Integer id) {
-//		
-//		//2.
-//		Optional<Item> dbDate = itemRepository.findById(id);
-//		
-//		//3.
-//		if(!dbDate.isEmpty()) {
-//			itemRepository.deleteById(id);
-//		}
-//		//4.
-//		return "redirect:/items";
-//	}
 }

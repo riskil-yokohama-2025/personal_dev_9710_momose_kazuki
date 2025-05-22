@@ -70,6 +70,7 @@ public class Comment {
 		this.createUserId = 1;
 		this.createDate = LocalDateTime.now();
 		this.updateUserId = 1;
+		this.updateDate = LocalDateTime.now();
 		this.deleteFlag = false;
 	}
 
