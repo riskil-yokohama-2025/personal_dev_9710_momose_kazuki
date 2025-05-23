@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>カテゴリー新規作成</title>
+</head>
+<body>
+	<!-- ヘッダ -->
+	<span th:replace="headerAdmin"></span>
+
+	<!--ナビ-->
+	<span th:replace="navAdmin"></span>
+
+	<!-- 管理者ページ -->
+	<span th:replace="spanAdmin"></span>
+	
+	<main>
+		<h3>カテゴリー新規作成</h3>
+
+		<!-- エラー用ナビ -->
+		<span th:replace="spanAdminError"></span>
+				
+		<form method="post" action="/admin/category/add">
+			<table border="1">
+				<tr>
+					<th>カテゴリー名<br>
+						※20文字以内
+					</th>
+					<td>
+						<input type="text" name="name">
+					</td>
+				</tr>
+			</table>
+			<button>カテゴリー新規作成</button>
+		</form>
+
+	</main>
+
+</body>
+</html>

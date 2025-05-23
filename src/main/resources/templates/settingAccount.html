@@ -3,6 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>ユーザー設定</title>
+	
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
 	<!-- ヘッダ -->
@@ -32,9 +34,22 @@
 			</tr>
 		</table>
 		
-		<form method="post" action="/user/setting/delete">
-			<button>退会</button>
+		<form method="post" action="/user/setting/delete" id="deleteForm">
+			<button type="button" th:onclick="|submitCheck()|">退会</button>
 		</form>
 	</main>
+	
+	<script>
+		function submitCheck(){
+			if(window.confirm('本当に退会してもよろしいですか？')){
+				$('#deleteForm').submit();
+				//return true; 自動でtrue返信してくれるから記述いらない
+			}else{
+				//window.alert(`キャンセル`)
+				//return false; 自動でtrue返信してくれるから記述いらない
+			}
+		}
+			
+	</script>
 </body>
 </html>

@@ -13,10 +13,10 @@
 	<table>
 		<tr>
 			<th>「[[${thread.title}]]」</th>
-			<td>カテゴリ：[[${categoryName}]]</td>
-			<td>作成者：[[${name}]]</td>
-			<td>スレッド作成日：</td>
-			<td>最終更新時間：</td>
+			<td>カテゴリ：[[${thread.categoryName}]]</td>
+			<td>作成者：[[${thread.creator}]]</td>
+			<td>スレッド作成日：[[${thread.createDate}]]</td>
+			<td>最終更新時間：[[${thread.lastUpdateDate}]]</td>
 			<td>内容：[[${thread.body}]]</td>
 		</tr>
 	</table>
@@ -28,14 +28,28 @@
 	</form>
 	
 	<table>
-		<tr th:each="comment:${commentDto}">
-			<td>[[${comment.name}]]</td>
-			<td>[[${comment.body}]]</td>
-			<td th:if="${comment.userId == @guestModel.id}">
-				<a th:href="|/comment/${comment.commentId}/edit|">編集</a>
+		<tr th:each="comment:${commentList}">
+			<td>[[${comment.commentCreator}]]</td>
+			<td>[[${comment.commentBody}]]</td>
+			<td th:if="${comment.commentCreatorId == @guestModel.id}">
+				<a th:href="|/comment/${comment.id}/edit|">編集</a>
 			</td>
 		</tr>
 	</table>
+
+<!--	<form method="get" th:action="|/comment/${thread.id}/add|">-->
+<!--		<button>コメント投稿</button>-->
+<!--	</form>-->
+	
+<!--	<table>-->
+<!--		<tr th:each="comment:${commentDto}">-->
+<!--			<td>[${comment.name}]]</td>-->
+<!--			<td>[${comment.body}]]</td>-->
+<!--			<td th:if="${comment.userId == @guestModel.id}">-->
+<!--				<a th:href="|/comment/${comment.commentId}/edit|">編集</a>-->
+<!--			</td>-->
+<!--		</tr>-->
+<!--	</table>-->
 
 </body>
 </html>

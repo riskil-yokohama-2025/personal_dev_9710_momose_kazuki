@@ -8,9 +8,11 @@
 	<!--  -->
 	<!-- ヘッダ -->
 	<span th:replace="header"></span>
+	<hr>
 	
 	<!-- ナビ -->
 	<span th:replace="navThread"></span>
+	<hr>
 	
 	<!-- 絞り込みリンク -->
 	<a href="/thread">全て</a>
@@ -24,18 +26,7 @@
 	<!-- 一覧 -->
 	<p th:if="${threadDisplay == null || threadDisplay.size() == 0}">投稿されたスレッドはありません</p>
 	
-	<table border="1" th:if="${threadDisplay != null && threadDisplay.size() > 0}">
-		<tr th:each="thread : ${threadDisplay}">
-			<th rowspan="4"><a href="|/thread/${thread.id}/detail|">[[${thread.title}]]</a></th>			
 
-			<td align="right">[[${thread.categoryName}]]</td>
-
-			<td align="right">作成者：[[${thread.creator}]]</td>
-
-			<td align="right">最終更新時間：[[${thread.createDate}]]</td>
-		</tr>
-		
-	</table>
 	
 	<table border="1" th:if="${threadDisplay != null && threadDisplay.size() > 0}">
 		<th:block th:each="thread : ${threadDisplay}">

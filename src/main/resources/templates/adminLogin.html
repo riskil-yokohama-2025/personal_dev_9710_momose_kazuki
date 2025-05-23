@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理者ログイン</title>
+</head>
+<body>
+	<header>
+		<h1>掲示板</h1>
+	</header>
+	
+	<main>
+		<h3>管理者ログイン</h3>
+		
+		<ul th:if="${errorList != null && errorList.size > 0}">
+			<li th:each="error : ${errorList}"  style="color: red;">
+					[[${error}]]
+			</li>
+		</ul>
+		
+		<form method="post" action="/admin/login">
+			<table>			
+				<tr>
+					<td><input type="text" name="email" placeholder="メールアドレス"></td>
+				</tr>
+				<tr>
+					<td><input type="password" name="password" placeholder="パスワード"></td>
+				</tr>
+			</table>
+			<button>ログイン</button>
+			
+		</form>
+		
+	</main>
+
+</body>
+</html>

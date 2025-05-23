@@ -66,13 +66,22 @@ public class UserController {
 		
 		if(email.length() > 0 && password.length() > 0) {
 			if(guestData.isEmpty()) {
-				
 				errorList.add( "メールアドレスとパスワードが一致しませんでした");
-			}
+			}			
 			else {
 				
 				// 2.
 				Guest guest = guestData.get();
+				
+				//banチェック
+				if(guest.getBanFlag() == true) {
+					errorList.add("あなたはBANされています。ログインできません");
+				}
+				//退会チェック
+				if(guest.getDeleteFlag() == true) {
+					errorList.add("既に退会されたアカウントです");
+				}
+				
 				// ログインしたユーザーの名前をセッションに登録
 				guestModel.setName(guest.getName());
 				guestModel.setId(guest.getId());
@@ -143,6 +152,23 @@ public class UserController {
 			errorList.add("パスワードが一致しませんでした");
 			}
 		}
+		if(errorList.size() > 0 ) {
+			model.addAttribute("errorList", errorList);
+			return "newGuest";
+		}
+		
+		
+		//メールアドレス・ユニークチェック
+		Optional<Guest> guestByEmail = guestRepository.findByEmail(email);
+		if(!guestByEmail.isEmpty()) {
+			Guest guestEmailCheck = guestByEmail.get();
+			if (guestEmailCheck.getBanFlag() == true || guestEmailCheck.getDeleteFlag() == true) {
+				errorList.add("このメールアドレスは使用できません");
+			} else {
+				errorList.add("このメールアドレスは使用できません");
+			}
+		}
+		
 		
 		if(errorList.size() > 0 ) {
 			model.addAttribute("errorList", errorList);

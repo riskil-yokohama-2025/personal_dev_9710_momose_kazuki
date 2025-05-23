@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>カテゴリー名変更</title>
+</head>
+<body>
+	<!-- ヘッダ -->
+	<span th:replace="headerAdmin"></span>
+
+	<!--ナビ-->
+	<span th:replace="navAdmin"></span>
+
+	<!-- 管理者ページ -->
+	<span th:replace="spanAdmin"></span>
+	
+	<main>
+		<h3>カテゴリー変更</h3>
+
+		<!-- エラー用ナビ -->
+		<span th:replace="spanAdminError"></span>
+		
+		<form method="post" th:action="|/admin/category/${category.id}/edit|">
+			<table>
+				<tr>
+					<th>カテゴリー名<br>
+						※20文字以内
+					</th>
+				</tr>
+				<td>
+					<input type="text" name="name" th:value="${category.name}">
+				</td>
+			</table>
+			<button>カテゴリー変更</button>
+		</form>
+</body>
+</html>

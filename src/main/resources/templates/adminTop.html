@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>管理者ホームページ</title>
+</head>
+<body>
+	<!-- ヘッダ -->
+	<span th:replace="headerAdmin"></span>
+	
+	<main>
+		<h4>管理者ページ</h4>
+		<form method="get" action="/admin/account">
+			<button>アカウント一覧</button>
+		</form>
+		<br>
+		<form method="get" action="/admin/category">
+			<button>カテゴリー一覧</button>
+		</form>
+	</main>
+
+</body>
+</html>

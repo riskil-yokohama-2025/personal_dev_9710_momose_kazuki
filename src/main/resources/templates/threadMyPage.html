@@ -4,6 +4,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>作成したスレッド</title>
+	
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 
 <body>
@@ -33,11 +35,11 @@
 				<th>削除</th>
 			</tr>
 			<tr th:each="thread : ${threadList}">
-				<td>[[${thread.updateDate}]]</td>
+				<td>[[${thread.createDate}]]</td>
 				<td>[[${thread.title}]]</td>
 				<!--  -->
 				<!-- カテゴリー内容 -->
-				<td>[[${thread.categoryId}]]</td>
+				<td>[[${thread.categoryName}]]</td>
 				<td>
 					<!--  -->
 					<!-- 変更リンク -->
@@ -46,14 +48,29 @@
 				<td>
 					<!--  -->
 					<!-- 削除リンク -->
-					<form method="post" th:action="|/thraed/${thread.id}/delete|">
-						<button>削除</button>
+					<form method="post" th:action="|/thraed/${thread.id}/delete|" th:id="|deleteForm${thread.id}|">
+						<button type="button" th:onclick="|submitCheck(${thread.id})|">削除</button>
 					</form>
 				</td>
 			</tr>
 		</table>
-
 	</main>
+	<script>
+		function changeSelect(formName){
+			$(`form[name="formName"]`).submit();
+			}
+			
+		function submitCheck(threadId){
+			if(window.confirm('本当に削除してもよろしいですか？')){
+				$(`#deleteForm${threadId}`).submit();
+				//return true; 自動でtrue返信してくれるから記述いらない
+			}else{
+				//window.alert(`キャンセル`)
+				//return false; 自動でtrue返信してくれるから記述いらない
+			}
+		}
+			
+	</script>
 </body>
 
 </html>

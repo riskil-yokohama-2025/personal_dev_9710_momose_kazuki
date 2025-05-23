@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>カテゴリー一覧</title>
+</head>
+<body>
+	
+	<!-- ヘッダ -->
+	<span th:replace="headerAdmin"></span>
+
+	<!--ナビ-->
+	<span th:replace="navAdmin"></span>
+
+	<!-- 管理者ページ -->
+	<span th:replace="spanAdmin"></span>
+	
+	<main>
+		<h3><a href="/admin/category">カテゴリー一覧</a></h3>
+
+		<form method="get" action="/admin/category">
+			
+			<!-- 検索 -->
+			<input type="text" name="keyword" th:value="${keyword}" placeholder="カテゴリー名で検索">
+			<button>検索</button>
+		</form>
+		
+		<!-- 新規作成ボタン -->
+		<form method="get" action="/admin/category/add">
+			<button>カテゴリー新規作成</button>
+		</form>
+		
+		<p th:if="${categoryList == null || categoryList.size() == 0}">カテゴリーが存在しません</p>
+		
+		<table th:if="${categoryList != null && categoryList.size() > 0}" border="1">
+			
+			<tr>
+				<th>カテゴリーID</th>
+				<th>カテゴリー名</th>
+				<th>変更</th>
+			</tr>
+			
+			<tr th:each="category:${categoryList}">
+				<td>[[${category.id}]]</td>
+				<td>[[${category.name}]]</td>
+				<td>
+					<a th:href="|/admin/category/${category.id}/edit|"><button>変更</button></a>
+				</td>
+			</tr>
+		</table>
+
+	</main>
+
+</body>
+</html>

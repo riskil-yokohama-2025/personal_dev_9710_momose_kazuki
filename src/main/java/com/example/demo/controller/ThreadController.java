@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.dto.CommentDto;
 import com.example.demo.entity.Category;
-import com.example.demo.entity.Comment;
 import com.example.demo.entity.Thread;
+import com.example.demo.entity.noTable.CommentDisplay;
 import com.example.demo.entity.noTable.ThreadDisplay;
 import com.example.demo.model.GuestModel;
 import com.example.demo.repository.CategoryRepository;
+import com.example.demo.repository.CommentDisplayRepository;
 import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.GuestRepository;
 import com.example.demo.repository.ThreadDisplayRepository;
@@ -41,7 +42,12 @@ public class ThreadController {
 	GuestRepository guestRepository;
 	
 	@Autowired
+	CommentDisplayRepository commentDisplayRepository;
+	
+	@Autowired
 	ThreadDisplayRepository threadDisplayRepository;
+	
+
 	
 	@Autowired
 	GuestModel guestModel;
@@ -70,11 +76,11 @@ public class ThreadController {
 		
 		if(categoryId != null) {
 			//threadList = threadRepository.findByCategoryId(categoryId);
-			threadDisplay = threadDisplayRepository.findByCategoryId(categoryId);
+			threadDisplay = threadDisplayRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.ASC, "id"));
 		}
 		else {
 			//threadList = threadRepository.findAll();
-			threadDisplay = threadDisplayRepository.findThreadDisplay();
+			threadDisplay = threadDisplayRepository.findThreadDisplay(Sort.by(Sort.Direction.ASC, "id"));
 		}
 				
 		//model.addAttribute("threadList", threadList);
@@ -97,39 +103,50 @@ public class ThreadController {
 		
 		
 		//データ取得
-		Optional<Thread> dbDate = threadRepository.findById(id);
-		List<Comment> commentDbDate = commentRepository.findByThreadComment(id);
+		Optional<ThreadDisplay> dbDate = threadDisplayRepository.findById(id);
+		//List<Comment> commentDbDate = commentRepository.findByThreadComment(id);
+		List<CommentDisplay> commentList = commentDisplayRepository.findCommentDisplayByThreadId(id, Sort.by(Sort.Direction.ASC, "id"));
 		
 		//データの有無確認
         if(dbDate.isEmpty()) {
             return "redirect:/thread";
         }
-        //オブジェクト生成×セット
-        Thread thread = dbDate.get();
-		model.addAttribute("thread", thread);
-		
-		String name = guestRepository.serchNameById(thread.getUserId());
-		model.addAttribute("name", name);
-		
-		String categoryName = categoryRepository.serchNameById(thread.getUserId());
-		model.addAttribute("categoryName", categoryName);
-		
-		List<CommentDto> commentDto = new ArrayList<CommentDto>();
-		 //コメントのDBデータ取得後のListを、拡張for文で回して、表示用に準備する
-		for (Comment comment:commentDbDate) {  
-			Integer commentId = comment.getId();
-			Integer userId = comment.getUserId();
-			String nameComment = guestRepository.serchNameById(comment.getUserId());
-			String body = comment.getBody();
-			CommentDto addComment = new CommentDto(commentId, userId, nameComment, body);			
-			commentDto.add(addComment);
-		}
-		model.addAttribute("commentDto", commentDto);
+//		//データの有無確認
+//        if(commentList.isEmpty()) {
+//            return "redirect:/thread";
+//        }
+        
+        ThreadDisplay thread =dbDate.get();
+        model.addAttribute("thread", thread);
+        model.addAttribute("commentList", commentList);
+        
+        return "threadDetail";
+	}
+        
+//        //オブジェクト生成×セット
+//        Thread thread = dbDate.get();
+//		model.addAttribute("thread", thread);
+//		
+//		String name = guestRepository.serchNameById(thread.getUserId());
+//		model.addAttribute("name", name);
+//		
+//		String categoryName = categoryRepository.serchNameById(thread.getUserId());
+//		model.addAttribute("categoryName", categoryName);
+//		
+//		List<CommentDto> commentDto = new ArrayList<CommentDto>();
+//		 //コメントのDBデータ取得後のListを、拡張for文で回して、表示用に準備する
+//		for (Comment comment:commentDbDate) {  
+//			Integer commentId = comment.getId();
+//			Integer userId = comment.getUserId();
+//			String nameComment = guestRepository.serchNameById(comment.getUserId());
+//			String body = comment.getBody();
+//			CommentDto addComment = new CommentDto(commentId, userId, nameComment, body);			
+//			commentDto.add(addComment);
+//		}
+//		model.addAttribute("commentDto", commentDto);
 		
 		//表示はcommentDtoにお任せするからいらない
 		//model.addAttribute("commentDbDate", commentDbDate);
-		return "threadDetail";
-	}
 
 
 
@@ -199,9 +216,11 @@ public class ThreadController {
 			return "redirect:/";
 		}
 		
-		Integer guestId = guestModel.getId();
-		List<Thread> threadList = new ArrayList<Thread>(); 
-		threadList = threadRepository.findByGuestId(guestId);
+		//Integer guestId = guestModel.getId();
+		String guestName = guestModel.getName();
+		//List<Thread> threadList = new ArrayList<Thread>();
+		List<ThreadDisplay> threadList = new ArrayList<ThreadDisplay>();
+		threadList = threadDisplayRepository.findByCreator(guestName);
 		model.addAttribute("threadList", threadList);
 		return "threadMyPage";
 	}
@@ -317,7 +336,8 @@ public class ThreadController {
 		      //4. 商品一覧の画面を開く(リダイレクト)
 	
 	//＝＝作成したスレッドを変更＝＝
-	//DB削除
+	//DB削除 ×
+	//DB非表示 →delete_flag
 	@PostMapping("/thraed/{id}/delete")
 	public String delete(
 			@PathVariable(name="id") Integer id) {
@@ -328,7 +348,13 @@ public class ThreadController {
 		//データ有無のチェック →存在したら削除処理
 		//DB削除
 		if(!threadDbData.isEmpty()) {
-			threadRepository.deleteById(id);
+			//threadRepository.deleteById(id);
+			
+			Thread thread = threadDbData.get();
+			thread.setDeleteFlag(true);
+			thread.setUpdateUserId(1);
+			thread.setUpdateDate(LocalDateTime.now());
+			threadRepository.save(thread);
 		}
 		
 		return "redirect:/thread/mythread";

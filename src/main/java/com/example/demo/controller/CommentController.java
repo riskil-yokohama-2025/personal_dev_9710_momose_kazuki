@@ -171,6 +171,9 @@ public class CommentController {
 		//3. 取得できたらデータを削除
 		//4. 商品一覧の画面を開く(リダイレクト)
 
+	
+	//DB削除 ×
+	//DB非表示 →delete_flag
 	@PostMapping("/comment/{id}/delete")
 	public String delete(
 			@PathVariable(name="id")Integer id,
@@ -183,7 +186,13 @@ public class CommentController {
 		Integer threadId = commentDbDate.get().getThreadId();
 		
 		if(!commentDbDate.isEmpty()) {
-			commentRepository.deleteById(id);
+			//commentRepository.deleteById(id);
+			
+			Comment comment = commentDbDate.get();
+			comment.setDeleteFlag(true);
+			comment.setUpdateUserId(1);
+			comment.setUpdateDate(LocalDateTime.now());
+			commentRepository.save(comment);
 		}
 		return "redirect:/thread/" + threadId + "/detail";
 	}

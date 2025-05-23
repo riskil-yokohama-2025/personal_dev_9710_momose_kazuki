@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>アカウント一覧</title>
+	
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+
+	<!-- ヘッダ -->
+	<span th:replace="headerAdmin"></span>
+	
+	<!--ナビ-->
+	<span th:replace="navAdmin"></span>
+	
+	<!-- 管理者ページ -->
+	<span th:replace="spanAdmin"></span>
+		
+	<main>
+		<h3><a href="/admin/account">アカウント一覧</a></h3>
+			
+		<form method="get" action="/admin/account">
+			<input type="text" name="keyword" th:value="${keyword}" placeholder="名前で検索">
+			<button>検索</button>
+		</form>
+		
+		<p th:if="${guestList == null || guestList.size() == 0}">
+			ユーザーアカウントは存在しません
+		</p>
+		
+		<table th:if="${guestList != null && guestList.size() > 0}" border="1">
+			<tr>
+				<th>ユーザID</th>
+				<th>名前</th>
+				<th>メールアドレス</th>
+				<th>BAN</th>
+			</tr>
+				
+			<tr th:each="guest:${guestList}">
+				<td>[[${guest.id}]]</td>
+				<td>[[${guest.name}]]</td>
+				<td>[[${guest.email}]]</td>
+				<td>
+					<form method="post" th:action="|/admin/ban/${guest.id}|" th:id="|deleteForm${guest.id}|">
+						<button type="button" th:onclick="|submitCheck(${guest.id})|">BAN</button>
+					</form>
+				</td>
+			</tr>
+		</table>
+			
+	</main>
+	
+	<script>
+		function submitCheck(guestId){
+			if(window.confirm('本当にBANしてもよろしいですか？')){
+				$(`#deleteForm${guestId}`).submit();
+				//return true; 自動でtrue返信してくれるから記述いらない
+			}else{
+				//window.alert(`キャンセル`)
+				//return false; 自動でtrue返信してくれるから記述いらない
+			}
+		}
+			
+	</script>
+</body>
+</html>

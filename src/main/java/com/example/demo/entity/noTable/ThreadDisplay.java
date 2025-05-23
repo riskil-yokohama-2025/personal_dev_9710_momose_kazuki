@@ -18,19 +18,22 @@ public class ThreadDisplay {
 	//スレッドのID
 	@Id
 	private Integer id;
+	@Column(name = "category_id")
+	private Integer categoryId;
 	@Column(name = "category_name")
 	private String categoryName;
 	@Column(name = "title")
 	private String title;
-	@Column(name = "category_id")
-	private Integer categoryId;
+	@Column(name = "body")
+	private String body;
 	@Column(name = "creator")
 	private String creator;
-	@Column(name = "update_date")
-	private LocalDateTime updateDate;
+	@Column(name = "last_update_date")
+	private LocalDateTime lastUpdateDate;
 	@Column(name = "create_date")
 	private LocalDateTime createDate;
 	
+
 	public ThreadDisplay() {
 	}
 
@@ -40,6 +43,14 @@ public class ThreadDisplay {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Integer categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public String getCategoryName() {
@@ -58,12 +69,12 @@ public class ThreadDisplay {
 		this.title = title;
 	}
 
-	public Integer getCategoryId() {
-		return categoryId;
+	public String getBody() {
+		return body;
 	}
 
-	public void setCategoryId(Integer categoryId) {
-		this.categoryId = categoryId;
+	public void setBody(String body) {
+		this.body = body;
 	}
 
 	public String getCreator() {
@@ -74,12 +85,12 @@ public class ThreadDisplay {
 		this.creator = creator;
 	}
 
-	public LocalDateTime getUpdateDate() {
-		return updateDate;
+	public LocalDateTime getLastUpdateDate() {
+		return lastUpdateDate;
 	}
 
-	public void setUpdateDate(LocalDateTime updateDate) {
-		this.updateDate = updateDate;
+	public void setLastUpdateDate(LocalDateTime lastUpdateDate) {
+		this.lastUpdateDate = lastUpdateDate;
 	}
 
 	public LocalDateTime getCreateDate() {
@@ -89,6 +100,5 @@ public class ThreadDisplay {
 	public void setCreateDate(LocalDateTime createDate) {
 		this.createDate = createDate;
 	}
-	
 	
 }
