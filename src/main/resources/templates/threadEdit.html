@@ -4,45 +4,64 @@
 <head>
 	<meta charset="UTF-8">
 	<title>スレッド変更</title>
+	
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
 </head>
 
 <body>
 	<!-- ヘッダ -->
 	<span th:replace="header"></span>
+	<hr>
 
 	<!-- ナビ -->
 	<span th:replace="navThread"></span>
+	<hr>
 
-	<main>
-		<h4>スレッド変更</h4>
+	<main class="container mb-6">
+		<br>
+		<br>
+		<div class="card mb-6">
+			<div class="card-header bg-info text-white text-center">
+				<h5>スレッド変更</h5>
+			</div>
+			<div class="card-body px-4 pt-2 m-1">
+				<ul th:if="${errorList != null && errorList.size() > 0}" class="list-group-flush">
+					<li th:each="error : ${errorList}" style="color: red;" class="list-group-item">
+						[[${error}]]
+					</li>
+				</ul>
+			</div>
 		
-		<ul th:if="${errorList != null && errorList.size() > 0}">
-			<li th:each="error : ${errorList}" style="color: red;">[[${error}]]</li>
-		</ul>
-		
-		<form method="post" th:action="|/thread/${thread.id}/edit|">
-			<table border="1">
-				<tr>
-					<th>カテゴリー</th>
-					<td>
-						<label th:each="category:${categoryList}">
-							<input type="radio" name="categoryId" th:value="|${category.id}|" th:checked="|${category.id == thread.categoryId}|">[[${category.name}]]&nbsp;
-						</label>
-					</td>
-				</tr>
-				<tr>
-					<th>タイトル<br>※100文字まで</th>
-					<td><input type="text" name="title" th:value="${thread.title}"></td>
-				</tr>
-				<tr>
-					<th>内容</th>
-					<td><textarea name="body">[[${thread.body}]]</textarea></td>
-				</tr>
-			</table>
-			<button>変更</button>
-		</form>
+			<div class="card-body px-4 pt-2 m-1">
+				<form method="post" th:action="|/thread/${thread.id}/edit|">
+					<table border="1">
+						<tr>
+							<th>カテゴリー</th>
+							<td>
+								<label th:each="category:${categoryList}">
+									<input type="radio" name="categoryId" th:value="|${category.id}|" th:checked="|${category.id == thread.categoryId}|">[[${category.name}]]&nbsp;
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<th>タイトル<br>※100文字まで</th>
+							<td><input type="text" name="title" th:value="${thread.title}"></td>
+						</tr>
+						<tr>
+							<th>内容</th>
+							<td><textarea name="body">[[${thread.body}]]</textarea></td>
+						</tr>
+					</table>
+					<button>変更</button>
+				</form>
+			</div>
+		</div>
 	</main>
 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 </body>
 
 </html>

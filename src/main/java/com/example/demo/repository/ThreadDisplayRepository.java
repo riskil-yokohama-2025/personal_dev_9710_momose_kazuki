@@ -131,6 +131,25 @@ public interface ThreadDisplayRepository extends JpaRepository<ThreadDisplay, In
 			+ "  WHERE t.id = ?1 "
 			+ "	    AND t.delete_flag = false", nativeQuery = true) //「category c」「guest g」は as の省略あり
 	Optional<ThreadDisplay> findById(Integer id);
+
+	//idによる検索
+	@Query(value = ""
+			+ BASE_SELECT
+			+ "from thread as t " //-1- の内容, asは～としての意味で省略可能               
+			+ "  INNER JOIN category c on t.category_id =  c.id " //「join」詳しくは下に！
+			+ "  INNER JOIN guest g on t.user_id = g.id"
+			+ "	 LEFT OUTER JOIN ("
+			+ "	    SELECT "
+			+ "	        thread_id,"
+			+ "	        max(create_date) as create_date"
+			+ "	        FROM comment "
+			+ "	        GROUP BY thread_id"
+			+ "	    ) as com"
+			+ "	    ON t.id = com.thread_id"
+			+ "  WHERE t.id = ?1 "
+			+ "     AND t.user_id = ?2"
+			+ "	    AND t.delete_flag = false", nativeQuery = true) //「category c」「guest g」は as の省略あり
+	Optional<ThreadDisplay> findByIdAndThreadId(Integer threadId, Integer userId);
 	
 	//ModelセッションのNameによる検索
 	@Query(value = ""
@@ -149,6 +168,42 @@ public interface ThreadDisplayRepository extends JpaRepository<ThreadDisplay, In
 			+ "  WHERE g.name = ?1 "
 			+ "	    AND t.delete_flag = false", nativeQuery = true) //「category c」「guest g」は as の省略あり
 	List<ThreadDisplay> findByCreator(String creator);
+	
+	@Query(value = ""
+			+ BASE_SELECT
+			+ "from thread as t " //-1- の内容, asは～としての意味で省略可能               
+			+ "  INNER JOIN category c on t.category_id =  c.id " //「join」詳しくは下に！
+			+ "  INNER JOIN guest g on t.user_id = g.id"
+			+ "	 LEFT OUTER JOIN ("
+			+ "	    SELECT "
+			+ "	        thread_id,"
+			+ "	        max(create_date) as create_date"
+			+ "	        FROM comment "
+			+ "	        GROUP BY thread_id"
+			+ "	    ) as com"
+			+ "	    ON t.id = com.thread_id"
+			+ "  WHERE g.name = ?1 "
+			+ "	    AND t.delete_flag = false", nativeQuery = true) //「category c」「guest g」は as の省略あり
+	List<ThreadDisplay> findByCreator(String creator, Sort sort);
+
+	@Query(value = ""
+			+ BASE_SELECT
+			+ "from thread as t " //-1- の内容, asは～としての意味で省略可能               
+			+ "  INNER JOIN category c on t.category_id =  c.id " //「join」詳しくは下に！
+			+ "  INNER JOIN guest g on t.user_id = g.id"
+			+ "	 LEFT OUTER JOIN ("
+			+ "	    SELECT "
+			+ "	        thread_id,"
+			+ "	        max(create_date) as create_date"
+			+ "	        FROM comment "
+			+ "	        GROUP BY thread_id"
+			+ "	    ) as com"
+			+ "	    ON t.id = com.thread_id"
+			+ "  WHERE g.name = ?1 "
+			+ "	    AND t.delete_flag = false"
+			+ "     AND c.id = :categoryId ", nativeQuery = true) //「category c」「guest g」は as の省略あり
+	List<ThreadDisplay> findByCreatorAndCategoryId(String creator, @Param("categoryId") Integer categoryId, Sort sort);
+
 	
 //	@Query(value = ""
 //			+ BASE_SELECT

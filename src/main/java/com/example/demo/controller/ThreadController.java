@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Category;
 import com.example.demo.entity.Thread;
@@ -56,6 +57,7 @@ public class ThreadController {
 	@GetMapping("/thread")
 	public String index(
 			@RequestParam(name="categoryId", defaultValue="") Integer categoryId,
+			@RequestParam(name="sort",defaultValue = "DESC")String sort,
 			Model model) {
 		
 		//ログインしてない時のアクセス不可
@@ -76,14 +78,21 @@ public class ThreadController {
 		
 		if(categoryId != null) {
 			//threadList = threadRepository.findByCategoryId(categoryId);
-			threadDisplay = threadDisplayRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.ASC, "id"));
+			threadDisplay = threadDisplayRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.ASC, "last_update_date"));
+		}
+//		else if (categoryId != null && ("Desc").equals(sort)) {
+//			threadDisplay = threadDisplayRepository.findThreadDisplay(Sort.by(Sort.Direction.DESC, "update_date"));
+//		} 
+		else if (categoryId == null && ("Asc").equals(sort)) {
+			threadDisplay = threadDisplayRepository.findThreadDisplay(Sort.by(Sort.Direction.ASC, "last_update_date"));
 		}
 		else {
 			//threadList = threadRepository.findAll();
-			threadDisplay = threadDisplayRepository.findThreadDisplay(Sort.by(Sort.Direction.ASC, "id"));
+			threadDisplay = threadDisplayRepository.findThreadDisplay(Sort.by(Sort.Direction.DESC, "last_update_date"));
 		}
 				
 		//model.addAttribute("threadList", threadList);
+		model.addAttribute("categoryId", categoryId);
 		model.addAttribute("threadDisplay", threadDisplay);
 		
 		return "threadTop";
@@ -94,6 +103,7 @@ public class ThreadController {
 	@GetMapping("/thread/{id}/detail")
 	public String detail(
 			@PathVariable(name="id") Integer id,
+			RedirectAttributes redirectAttributes,
 			Model model) {
 		
 		//ログインしてない時のアクセス不可
@@ -107,14 +117,15 @@ public class ThreadController {
 		//List<Comment> commentDbDate = commentRepository.findByThreadComment(id);
 		List<CommentDisplay> commentList = commentDisplayRepository.findCommentDisplayByThreadId(id, Sort.by(Sort.Direction.ASC, "id"));
 		
-		//データの有無確認
-        if(dbDate.isEmpty()) {
-            return "redirect:/thread";
-        }
 //		//データの有無確認
-//        if(commentList.isEmpty()) {
+//        if(dbDate.isEmpty()) {
 //            return "redirect:/thread";
 //        }
+        if (dbDate.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "指定されたスレッドは存在しません。");
+            return "redirect:/thread/mythread";
+        }
+
         
         ThreadDisplay thread =dbDate.get();
         model.addAttribute("thread", thread);
@@ -209,10 +220,14 @@ public class ThreadController {
 	
 	//＝＝作成したスレッドを一覧表示＝＝  
 	@GetMapping("/thread/mythread")
-	public String mythread(Model model) {
+	public String mythread(
+			@RequestParam(name="categoryId", defaultValue="") Integer categoryId,
+			@RequestParam(name="sort",defaultValue = "DESC")String sort,
+			Model model) {
 		
 		//ログインしてない時のアクセス不可
-		if(guestModel.getId() == null) {
+		if(guestModel.getId() == null || guestRepository.findById(guestModel.getId()).get().getBanFlag() == true ||
+				guestRepository.findById(guestModel.getId()).get().getDeleteFlag() == true) {
 			return "redirect:/";
 		}
 		
@@ -220,8 +235,30 @@ public class ThreadController {
 		String guestName = guestModel.getName();
 		//List<Thread> threadList = new ArrayList<Thread>();
 		List<ThreadDisplay> threadList = new ArrayList<ThreadDisplay>();
-		threadList = threadDisplayRepository.findByCreator(guestName);
+		//threadList = threadDisplayRepository.findByCreator(guestName);
+		
+		List<Category> categoryList = categoryRepository.findAll();
+		
+		if(categoryId != null) {
+			//threadList = threadRepository.findByCategoryId(categoryId);
+			threadList = threadDisplayRepository.findByCreatorAndCategoryId(guestName, categoryId, Sort.by(Sort.Direction.DESC, "last_update_date"));
+		}
+//		else if (categoryId != null && ("Desc").equals(sort)) {
+//			threadDisplay = threadDisplayRepository.findThreadDisplay(Sort.by(Sort.Direction.DESC, "update_date"));
+//		} 
+		else if (categoryId == null && ("Asc").equals(sort)) {
+			threadList = threadDisplayRepository.findByCreator(guestName, Sort.by(Sort.Direction.ASC, "last_update_date"));
+		}
+		else {
+			//threadList = threadRepository.findAll();
+			threadList = threadDisplayRepository.findByCreator(guestName, Sort.by(Sort.Direction.DESC, "last_update_date"));
+		}
+				
+		//model.addAttribute("threadList", threadList);
+		model.addAttribute("categoryId", categoryId);
 		model.addAttribute("threadList", threadList);
+		model.addAttribute("categoryList", categoryList);
+		
 		return "threadMyPage";
 	}
 
@@ -231,6 +268,7 @@ public class ThreadController {
 	@GetMapping("/thread/{id}/edit")
 	public String edit(
 			@PathVariable(name="id") Integer id,
+			RedirectAttributes redirectAttributes,
 			Model model) {
 		
 		//ログインしてない時のアクセス不可
@@ -242,15 +280,18 @@ public class ThreadController {
 		model.addAttribute("categoryList", categoryList);
 		
 		//データの取得
-		Optional<Thread> threadDbData = threadRepository.findById(id);
+		Optional<ThreadDisplay> threadDbData = threadDisplayRepository.findByIdAndThreadId(id, guestModel.getId());
+        if (threadDbData.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "指定されたスレッドは存在しません。");
+            return "redirect:/thread";
+        }
 		
+//		//データ有無のチェック
+//		if (threadDbData.isEmpty()) {
+//			return "redirect:/thread/mythread";
+//		}
 		
-		//データ有無のチェック
-		if (threadDbData.isEmpty()) {
-			return "redirect:/thread/mythread";
-		}
-		
-		Thread thread = threadDbData.get();
+        ThreadDisplay thread = threadDbData.get();
 		model.addAttribute("thread", thread);
 		return "threadEdit";
 	}
@@ -279,6 +320,9 @@ public class ThreadController {
 			@RequestParam(name="body", defaultValue = "") String body,
 			Model model) {
 		
+		
+		List<Category> categoryList = categoryRepository.findAll();
+		model.addAttribute("categoryList", categoryList);
 		
 		//データの取得
 		Optional<Thread> threadDbData = threadRepository.findById(id);
@@ -355,6 +399,9 @@ public class ThreadController {
 			thread.setUpdateUserId(1);
 			thread.setUpdateDate(LocalDateTime.now());
 			threadRepository.save(thread);
+			
+			//コメントにもdelete_Flag
+			commentRepository.deleteByThreadId(id);
 		}
 		
 		return "redirect:/thread/mythread";

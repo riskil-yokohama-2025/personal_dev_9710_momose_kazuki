@@ -1,0 +1,58 @@
+@charset "UTF-8";
+
+body{
+	background-color: #eee;
+}
+
+header, nav, footer{
+	color: #fff;
+	background-color: rgb(49, 179, 0);
+}
+
+header a,
+nav a{
+	color: #fff;
+}
+
+
+main{
+	background-color: #fff;
+}
+
+/*hr{*/
+/*	border: 1px dashed #7d8bae;*/
+/*}*/
+
+/*table{*/
+/*	margin: auto;*/
+/*	border-collapse: collapse;*/
+/*	width: 90%;*/
+/*}*/
+
+/*th{*/
+/*	color: #fff;*/
+/*	background-color: #7d8bae;*/
+/*}*/
+
+/*td{*/
+/*	border: 1px solid #7d8bae;*/
+/*}*/
+
+
+/*button{*/
+/*	margin: 2px;*/
+/*	padding: 5px 20px;*/
+/*	width: 150px;*/
+
+/*	color: #fff;*/
+/*	background-color: #e5847b;*/
+/*}*/
+
+.errorMessage{
+	color: rgb(255, 70, 70);
+}
+
+.order_id{
+	color: #f00;
+	font-weight: bold;
+}

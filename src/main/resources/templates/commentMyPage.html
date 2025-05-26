@@ -14,13 +14,15 @@
 	<main>
 		<h4>投稿したコメント</h4>
 		
+		<h5 th:if="${errorMessage != null}">[[${errorMessage}]]</h5>	
+		
 		<!--ソート(更新順)を追加-->
 <!--		<a href="/comment?sort=createDateAsc">更新順</a>-->
 		
 		<table border="1" th:each="comment:${commentList}">
 			<tr>
 				<!--自分のコメント内容表示-->
-				<th>[[${comment.body}]]</th>
+				<th>[[${comment.commentBody}]]</th>
 				<!--編集リンク-->
 				<td>
 					<a th:href="|/comment/${comment.id}/edit|">編集</a>
@@ -30,10 +32,10 @@
 				<!--コメントしたスレッドの表示-->
 				<!-- スレッド名の表示 -->
 				<td>
-					<a th:href="|/thread/${comment.threadId}/detail|"></a>
+					<a th:href="|/thread/${comment.threadId}/detail|">[[${comment.title}]]</a>
 				</td>
 				<!--コメント日時表示-->
-				<td>コメント日時：[[${comment.createDate}]]</td>
+				<td>コメント日時：[[${comment.commentCreateDate}]]</td>
 			</tr>
 			<br>
 		</table>	

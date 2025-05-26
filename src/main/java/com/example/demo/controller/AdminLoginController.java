@@ -30,8 +30,16 @@ public class AdminLoginController {
 	HostModel hostModel;
 	
 	@GetMapping({ "/admin", "/admin/login", "/admin/logout" })
-	public String index() {
+	public String index(
+			@RequestParam(name = "error", defaultValue = "") String error,
+			Model model) {
 
+		if(error.equals("notLoggedIn")) {
+			List<String> errorList = new ArrayList<>();
+			errorList.add("ログインしてください");
+			model.addAttribute("errorList", errorList);
+		}
+		
 		session.invalidate();
 		return "adminLogin";
 	}

@@ -18,15 +18,28 @@
 	<span th:replace="spanAdmin"></span>
 		
 	<main>
-		<h3><a href="/admin/account">アカウント一覧</a></h3>
-			
+		<h3>アカウント一覧</h3>
+		
 		<form method="get" action="/admin/account">
 			<input type="text" name="keyword" th:value="${keyword}" placeholder="名前で検索">
 			<button>検索</button>
 		</form>
 		
+<!--		<form name="pullDownBan">-->
+<!--			<select name="banLink" onchange="if(document.pullDownBan.banLink.href){location.href=document.pullDownBan.banLink.href;}">-->
+<!--				<option>USER</option>-->
+<!--				<hr>-->
+<!--				<option href="/admin/account">ALL</option>-->
+<!--				<option th:href="|/admin/account?banFlagNumber=0}|">GOOD USER</option>-->
+<!--				<option th:href="|/admin/account?banFlagNumber=1}|">BAN USER</option>-->
+<!--				<option th:value="|/admin/account?keyword=${keyword}&banFlagNumber=${(banFlagNumber==null)?'':banFlagNumber=1}|">BAN USER</option>-->
+<!--			</select>-->
+<!--		</form>-->
+		
+			
+		
 		<p th:if="${guestList == null || guestList.size() == 0}">
-			ユーザーアカウントは存在しません
+			アカウントは存在しません
 		</p>
 		
 		<table th:if="${guestList != null && guestList.size() > 0}" border="1">
@@ -42,8 +55,13 @@
 				<td>[[${guest.name}]]</td>
 				<td>[[${guest.email}]]</td>
 				<td>
-					<form method="post" th:action="|/admin/ban/${guest.id}|" th:id="|deleteForm${guest.id}|">
+					<form method="post" th:action="|/admin/ban/${guest.id}|" th:id="|deleteForm${guest.id}|"
+						th:if="${guest.banFlag == false}">
 						<button type="button" th:onclick="|submitCheck(${guest.id})|">BAN</button>
+					</form>
+					<form method="post" th:action="|/admin/ban/${guest.id}|" th:id="|deleteForm${guest.id}|"
+						th:if="${guest.banFlag == true}">
+						<button type="button" th:onclick="|submitCheckLifte(${guest.id})|">解除</button>
 					</form>
 				</td>
 			</tr>
@@ -59,6 +77,13 @@
 			}else{
 				//window.alert(`キャンセル`)
 				//return false; 自動でtrue返信してくれるから記述いらない
+			}
+		}
+		
+		function submitCheckLifte(guestId){
+			if(window.confirm('本当にBANを解除してもよろしいですか？')){
+				$(`#deleteForm${guestId}`).submit();
+			}else{
 			}
 		}
 			

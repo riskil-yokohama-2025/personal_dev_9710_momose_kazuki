@@ -3,55 +3,131 @@
 <head>
 	<meta charset="UTF-8">
 	<title>掲示板</title>
+	
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
 </head>
 <body>
 	<!--  -->
 	<!-- ヘッダ -->
-	<span th:replace="header"></span>
+	<header th:replace="header"></header>
 	<hr>
 	
 	<!-- ナビ -->
 	<span th:replace="navThread"></span>
 	<hr>
 	
-	<!-- 絞り込みリンク -->
-	<a href="/thread">全て</a>
-
-	<th:block th:each="category:${categoryList}">
-		<a th:href="|/thread?categoryId=${category.id}|">[[${category.name}]]</a>
-	</th:block>
-	
-	<!-- ソート類 -->
-	
-	<!-- 一覧 -->
-	<p th:if="${threadDisplay == null || threadDisplay.size() == 0}">投稿されたスレッドはありません</p>
-	
-
-	
-	<table border="1" th:if="${threadDisplay != null && threadDisplay.size() > 0}">
-		<th:block th:each="thread : ${threadDisplay}">
+	<main class="container mb-6">
 		
-		<tr>
-			<th rowspan="4"><a th:href="|/thread/${thread.id}/detail|">[[${thread.title}]]</a></th>			
-		</tr>
-		<tr>
-			<td align="right">[[${thread.categoryName}]]</td>
-		</tr>
-		<tr>
-			<!-- Userで、SQL文検索 -->
-			<!-- 　→ User で、IDによって絞る -->
-			<!-- 　　→ nameの取得 -->
-			<td align="right">作成者：[[${thread.creator}]]</td>
-		</tr>
-		<tr>
-			<!-- 更新時間→　Comment で、SQL文検索 -->
-			<!-- 　→ IDで絞る -->
-			<!-- 　　→ Max 関数で最新時間の取得 -->
-			<td align="right">最終更新時間：[[${thread.createDate}]]</td>
-		</tr>
-		</th:block>
+<!--		<h4 th:if="${errorMessage != null}">[${errorMessage}]]</h4>	-->
+<!--		 絞り込みリンク -->
+<!--		<a href="/thread">全て</a>-->
+
+<!--		<th:block th:each="category:${categoryList}">-->
+<!--			<a th:href="|/thread?categoryId=${category.id}|">[${category.name}]]</a>-->
+<!--		</th:block>-->
 		
-	</table>
+		<div class="row justify-content-between mx-1"> 
+			<div class="col-4 btn-group" >
+				<form name="pullDownCategory" action="/thread">
+					<select name="categoryId" onChange="changeSelect('pullDownCategory')">
+						<option value="">全て</option>
+						<hr>
+						<option th:each="category:${categoryList}" th:value="${category.id}" th:selected="|${category.id == categoryId}|">[[${category.name}]]</option>
+					</select>
+				</form>		
+			</div>
+			<div class="col-2 btn-group" >
+				<form name="pullDownSort" action="/thread">
+					<select name="sortLink" onChange="changeSelect('pullDownSort')">
+						<option value="">並び替え</option>
+						<hr>
+						<option th:value="|/thread?categoryId=${(categoryId == null) ? '' : categoryId}&sort=Desc|"
+								th:selected="${sort}=='Desc'">新しい順</option>
+						<option th:value="|/thread?categoryId=${(categoryId == null) ? '' : categoryId}&sort=Asc|"
+								th:selected="${sort}=='Asc'">古い順</option>
+					</select>
+				</form>		
+			</div>
+		</div>
+		
+		<!-- 別解（プルダウン） -->
+<!--		<form name="categorylink" class="custom-select-form">-->
+<!--						<label for="categorySelect" class="custom-label">カテゴリ</label>-->
+<!--						<select class="custom-select" id="categorySelect" name="selectlink"-->
+<!--							onchange="if(this.value){location.href=this.value;}">-->
+<!--							<option value="/thread">全て</option>-->
+<!--							<option th:each="category:${categoryList}" th:value="|/thread?categoryId=${category.id}|"-->
+<!--								th:selected="${categoryId}==${category.id}">-->
+<!--								[${category.name}]]-->
+<!--							</option>-->
+<!--						</select>-->
+<!--					</form>-->
+					
+
+
+		<!-- ソート -->
+		
+		
+		<br>
+		
+		<!-- 一覧 -->
+<!--		<main class="container mb-6">-->
+<!--			<p th:if="${threadDisplay == null || threadDisplay.size() == 0}">投稿されたスレッドはありません</p>-->
+<!--			<div class="card mb-6">-->
+<!--		    	<div class="card-header bg-dark text-white text-center">-->
+<!--		    </div>-->
+<!--		  </div>-->
+		
+		<div class="card mb-6">
+    		<div class="card-header bg-info text-white text-center">
+				<h5 class="mb-0">Fascinating Topic</h5>
+    			</div>
+    		<div class="card-body">
+				<div th:if="${threadDisplay == null || threadDisplay.size() == 0}">
+					投稿されたスレッドはありません
+				</div>
+				<div th:if="${threadDisplay != null && threadDisplay.size() > 0}">
+					<th:block th:each="thread : ${threadDisplay}" class="col">
+						<div class="card shadow rounded-left px-5 my-3">
+							<div class="card-body position-relative pb-4">
+								<h5 class="card-title fw-bold mb-3">
+									<a th:href="|/thread/${thread.id}/detail|">[[${thread.title}]]
+									</a>
+								</h5>
+								<div class="card-text">
+									<div class="container" >
+										<div class="row">
+											<div class="col justify-content-end">
+												<span>[[${thread.categoryName}]]</span>
+											</div>
+											<div class="col justify-content-end">
+												<h6>作成者：[[${thread.creator}]]</h6>
+											</div>
+											<div class="col justify-content-end">
+												<span>最終更新時間：[[${#temporals.format(thread.lastUpdateDate, 'yyyy/MM/dd HH:mm')}]]</span>
+											</div>
+										</div>
+									</div>	
+								</div>
+							</div>
+						</div>
+					</th:block>		
+				</div>
+			</div>
+		</div>	
+	</main>
 	
+	<script>
+		
+		function changeSelect(formName){
+			$(`form[name="${formName}"]`).submit();
+		}
+	</script>
+	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

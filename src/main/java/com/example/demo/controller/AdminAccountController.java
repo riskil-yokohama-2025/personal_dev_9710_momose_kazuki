@@ -58,6 +58,7 @@ public class AdminAccountController {
 	@GetMapping("/admin/account")
 	public String showAccount(
 			@RequestParam(name = "keyword", defaultValue="") String keyword,
+			@RequestParam(name = "banFlagNumber", defaultValue="0") Integer banFlagNumber,
 			Model model) {
 
 		//ログインしてない時のアクセス不可
@@ -66,14 +67,39 @@ public class AdminAccountController {
 		}
 		
 		List <Guest> guestList = new ArrayList<>();
+//		Boolean banFlag;
+//		if(banFlagNumber!=null) {
+//			if(banFlagNumber==0) {
+//				banFlag = false;
+//				if(keyword == null || keyword.length() == 0) {
+//					guestList = guestRepository.findByBanFlag(banFlag, Sort.by(Sort.Direction.ASC, "id"));
+//				}
+////				if(keyword != null && keyword.length() > 0) 
+//				else{
+//				guestList = guestRepository.findByBanFlagAndName(banFlag, "%" + keyword + "%", Sort.by(Sort.Direction.ASC, "id"));
+//				} 
+//			}
+//			if(banFlagNumber==1) {
+//				banFlag = true;
+//				if(keyword == null || keyword.length() == 0) {
+//					guestList = guestRepository.findByBanFlag(banFlag, Sort.by(Sort.Direction.ASC, "id"));
+//				}
+//				else{
+//				guestList = guestRepository.findByBanFlagAndName(banFlag, "%" + keyword + "%", Sort.by(Sort.Direction.ASC, "id"));
+//				} 
+//			}
+//		}
 		
 		if(keyword != null && keyword.length() > 0) {
 			guestList = guestRepository.findByName("%" + keyword + "%", Sort.by(Sort.Direction.ASC, "id"));
 		} 
+		
 		else {
+//		if(banFlagNumber==null){
 			guestList = guestRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
 		}
 		
+		model.addAttribute("banFlagNumber", banFlagNumber);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("guestList", guestList);
 		return "adminAccount";
@@ -88,7 +114,11 @@ public class AdminAccountController {
 		if (!guestDbData.isEmpty()) {
 			Guest guest = guestDbData.get();
 			
-			guest.setBanFlag(true);
+			if(guest.getBanFlag()==false) {
+				guest.setBanFlag(true);	
+			}else {
+				guest.setBanFlag(false);
+			}
 			guest.setUpdateUserId(1);
 			guest.setUpdateDate(LocalDateTime.now());
 			guestRepository.save(guest);

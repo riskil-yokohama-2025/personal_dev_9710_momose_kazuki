@@ -6,16 +6,20 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Comment;
 import com.example.demo.entity.Thread;
+import com.example.demo.entity.noTable.CommentDisplay;
 import com.example.demo.model.GuestModel;
+import com.example.demo.repository.CommentDisplayRepository;
 import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.ThreadRepository;
 
@@ -27,6 +31,9 @@ public class CommentController {
 	
 	@Autowired
 	ThreadRepository threadRepository;
+	
+	@Autowired
+	CommentDisplayRepository commDisplayRepository;
 	
 	@Autowired
 	GuestModel guestModel;
@@ -86,6 +93,7 @@ public class CommentController {
 	@GetMapping("/comment/{id}/edit")
 	public String edit(
 			@PathVariable(name="id")Integer id,
+			RedirectAttributes redirectAttributes,
 			Model model) {
 		
 		//ログインしてない時のアクセス不可
@@ -95,9 +103,10 @@ public class CommentController {
 		
 		
 		//データ取得
-		Optional<Comment> commentDbDate = commentRepository.findById(id);
+		Optional<Comment> commentDbDate = commentRepository.findByIdAndUserId(id, guestModel.getId());
 		//データの有無確認
         if(commentDbDate.isEmpty()) {
+        	redirectAttributes.addFlashAttribute("errorMessage", "指定されたコメントは存在しません。");
             return "redirect:/thread";
         }
         //オブジェクト生成×セット
@@ -208,8 +217,10 @@ public class CommentController {
 		}
 		
 		Integer guestId = guestModel.getId();
-		List<Comment> commentList = new ArrayList<Comment>();
-		commentList = commentRepository.findByGuestId(guestId);
+		//List<Comment> commentList = new ArrayList<Comment>();
+		//commentList = commentRepository.findByGuestId(guestId);
+		List<CommentDisplay> commentList = new ArrayList<CommentDisplay>();
+		commentList = commDisplayRepository.findCommentDisplayByUserId(guestId, Sort.by(Sort.Direction.ASC, "user_Id"));
 		model.addAttribute("commentList", commentList);
 		
 		
