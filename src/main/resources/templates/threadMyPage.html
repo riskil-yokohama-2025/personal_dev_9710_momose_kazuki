@@ -27,29 +27,26 @@
 		<!-- プルダウン -->
 		
 		
-		<div class="row justify-content-between mx-1"> 
-			<div class="col-4 btn-group" >
-				<form name="pullDownCategory" action="/thread/mythread">
-					<select name="categoryId" onChange="changeSelect('pullDownCategory')">
+		<form name="pullDown" action="/thread/mythread">
+			<div class="row justify-content-between mx-1">
+				<div class="col-4 btn-group">
+					<select name="categoryId" onChange="changeSelect()">
 						<option value="">全て</option>
 						<hr>
-						<option th:each="category:${categoryList}" th:value="${category.id}" th:selected="|${category.id == categoryId}|">[[${category.name}]]</option>
+						<option th:each="category:${categoryList}" th:value="${category.id}"
+							th:selected="|${category.id == categoryId}|">[[${category.name}]]</option>
 					</select>
-				</form>		
-			</div>
-			<div class="col-2 btn-group" >
-				<form name="pullDownSort" action="/thread/mythread">
-					<select name="sortLink" onChange="changeSelect('pullDownSort')">
+				</div>
+				<div class="col-2 btn-group">
+					<select name="sort" onChange="changeSelect()">
 						<option value="">並び替え</option>
 						<hr>
-						<option th:value="|/thread?categoryId=${(categoryId == null) ? '' : categoryId}&sort=Desc|"
-								th:selected="${sort}=='Desc'">新しい順</option>
-						<option th:value="|/thread?categoryId=${(categoryId == null) ? '' : categoryId}&sort=Asc|"
-								th:selected="${sort}=='Asc'">古い順</option>
+						<option value="Desc" th:selected="${sort}=='Desc'">新しい順</option>
+						<option value="Asc" th:selected="${sort}=='Asc'">古い順</option>
 					</select>
-				</form>		
+				</div>
 			</div>
-		</div>
+		</form>
 		
 		<br>
 		<div class="card mb-6">
@@ -120,9 +117,9 @@
 		</div>
 	</main>
 	<script>
-		function changeSelect(formName){
-			$(`form[name="formName"]`).submit();
-			}
+		function changeSelect() {
+			$('form[name="pullDown"]').submit();
+		}
 			
 		function submitCheck(threadId){
 			if(window.confirm('本当に削除してもよろしいですか？')){
@@ -133,10 +130,7 @@
 				//return false; 自動でtrue返信してくれるから記述いらない
 			}
 		}
-		
-		function changeSelect(formName){
-			$(`form[name="${formName}"]`).submit();
-		}
+
 			
 	</script>
 

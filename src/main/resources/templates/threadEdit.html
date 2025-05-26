@@ -38,23 +38,26 @@
 				<form method="post" th:action="|/thread/${thread.id}/edit|">
 					<table border="1">
 						<tr>
-							<th>カテゴリー</th>
+							<th class="form-label">カテゴリー</th>
 							<td>
 								<label th:each="category:${categoryList}">
-									<input type="radio" name="categoryId" th:value="|${category.id}|" th:checked="|${category.id == thread.categoryId}|">[[${category.name}]]&nbsp;
+									<input type="radio" name="categoryId" th:value="|${category.id}|" th:checked="|${category.id == thread.categoryId}|"
+									 class="form-label">[[${category.name}]]&nbsp;
 								</label>
 							</td>
 						</tr>
 						<tr>
 							<th>タイトル<br>※100文字まで</th>
-							<td><input type="text" name="title" th:value="${thread.title}"></td>
+							<td><input type="text" name="title" th:value="${thread.title}"
+								 class="form-control"></td>
 						</tr>
 						<tr>
 							<th>内容</th>
-							<td><textarea name="body">[[${thread.body}]]</textarea></td>
+							<td><textarea name="body"
+								class="form-control" >[[${thread.body}]]</textarea></td>
 						</tr>
 					</table>
-					<button>変更</button>
+					<button class="btn btn-warning-bg-subtle mt-3">変更</button>
 				</form>
 			</div>
 		</div>

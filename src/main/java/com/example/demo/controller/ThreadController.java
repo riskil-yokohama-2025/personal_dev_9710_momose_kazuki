@@ -73,12 +73,18 @@ public class ThreadController {
 
 		
 		//絞り込み
-		List<Category> categoryList = categoryRepository.findAll();
+		List<Category> categoryList = categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
 		model.addAttribute("categoryList", categoryList);
 		
-		if(categoryId != null) {
+		if(categoryId != null  && ("Asc").equals(sort)) {
 			//threadList = threadRepository.findByCategoryId(categoryId);
 			threadDisplay = threadDisplayRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.ASC, "last_update_date"));
+		}
+		else if(categoryId != null  && ("Desc").equals(sort)) {
+			threadDisplay = threadDisplayRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.DESC, "last_update_date"));
+		}
+		else if(categoryId != null) {
+			threadDisplay = threadDisplayRepository.findByCategoryId(categoryId, Sort.by(Sort.Direction.DESC, "last_update_date"));
 		}
 //		else if (categoryId != null && ("Desc").equals(sort)) {
 //			threadDisplay = threadDisplayRepository.findThreadDisplay(Sort.by(Sort.Direction.DESC, "update_date"));
@@ -172,7 +178,7 @@ public class ThreadController {
 		}
 		
 		
-		List<Category> categoryList = categoryRepository.findAll();
+		List<Category> categoryList = categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
 		model.addAttribute("categoryList", categoryList);
 		return "threadAdd";
 	}
@@ -222,7 +228,7 @@ public class ThreadController {
 	@GetMapping("/thread/mythread")
 	public String mythread(
 			@RequestParam(name="categoryId", defaultValue="") Integer categoryId,
-			@RequestParam(name="sort",defaultValue = "DESC")String sort,
+			@RequestParam(name="sort",defaultValue = "Desc")String sort,
 			Model model) {
 		
 		//ログインしてない時のアクセス不可
@@ -237,9 +243,16 @@ public class ThreadController {
 		List<ThreadDisplay> threadList = new ArrayList<ThreadDisplay>();
 		//threadList = threadDisplayRepository.findByCreator(guestName);
 		
-		List<Category> categoryList = categoryRepository.findAll();
+		List<Category> categoryList = categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+		model.addAttribute("categoryId", categoryId);
 		
-		if(categoryId != null) {
+		if(categoryId != null && ("Asc").equals(sort)) {
+			threadList = threadDisplayRepository.findByCreatorAndCategoryId(guestName, categoryId, Sort.by(Sort.Direction.ASC, "last_update_date"));
+		}
+		else if(categoryId != null && ("Desc").equals(sort)) {
+			threadList = threadDisplayRepository.findByCreatorAndCategoryId(guestName, categoryId, Sort.by(Sort.Direction.DESC, "last_update_date"));
+		}
+		else if(categoryId != null) {
 			//threadList = threadRepository.findByCategoryId(categoryId);
 			threadList = threadDisplayRepository.findByCreatorAndCategoryId(guestName, categoryId, Sort.by(Sort.Direction.DESC, "last_update_date"));
 		}
@@ -253,9 +266,9 @@ public class ThreadController {
 			//threadList = threadRepository.findAll();
 			threadList = threadDisplayRepository.findByCreator(guestName, Sort.by(Sort.Direction.DESC, "last_update_date"));
 		}
-				
+		
+
 		//model.addAttribute("threadList", threadList);
-		model.addAttribute("categoryId", categoryId);
 		model.addAttribute("threadList", threadList);
 		model.addAttribute("categoryList", categoryList);
 		
@@ -276,7 +289,7 @@ public class ThreadController {
 			return "redirect:/";
 		}
 		
-		List<Category> categoryList = categoryRepository.findAll();
+		List<Category> categoryList = categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
 		model.addAttribute("categoryList", categoryList);
 		
 		//データの取得
@@ -321,7 +334,7 @@ public class ThreadController {
 			Model model) {
 		
 		
-		List<Category> categoryList = categoryRepository.findAll();
+		List<Category> categoryList = categoryRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
 		model.addAttribute("categoryList", categoryList);
 		
 		//データの取得
