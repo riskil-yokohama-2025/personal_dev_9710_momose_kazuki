@@ -88,29 +88,35 @@
 
 				<div th:if="commentList != null" class="card shadow rounded-left px-2 my-3">
 					<div class="card-body position-relative pb-5">
-						<th:block th:each="comment:${commentList}" class="col pb-3 m-2">
-							<div class="card-text">
-								<div class="container">
-									<div class="row text-left mx-2">
-										<div class="col align-self-start">
-											<span>[[${comment.commentCreator}]]</span>
+						<div th:if="${commentList == null || commentList.size() == 0}">
+							投稿されたコメントはありません
+						</div>
+						<div th:if="${commentList != null && commentList.size() > 0}">
+							<th:block th:each="comment:${commentList}" class="col pb-3 m-2">
+								<div class="card-text">
+									<div class="container">
+										<div class="row text-left mx-2">
+											<div class="col align-self-start">
+												<span>[[${comment.commentCreator}]]</span>
+											</div>
 										</div>
-									</div>
-									<div class="row justify-content-between mx-2 mb-2">
-										<div class="col-9">
-											<h6>[[${comment.commentBody}]]</h6>
-										</div>
+										<div class="row justify-content-between mx-2 mb-2">
+											<div class="col-9">
+												<h6>[[${comment.commentBody}]]</h6>
+											</div>
 											<div class="col-3">
-										<div th:if="${comment.commentCreatorId == @guestModel.id}">
-												<a th:href="|/comment/${comment.id}/edit|">編集</a>
+												<div th:if="${comment.commentCreatorId == @guestModel.id}">
+													<a th:href="|/comment/${comment.id}/edit|">編集</a>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-						</th:block>
+							</th:block>
+						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 		</div>
 	</main>
 

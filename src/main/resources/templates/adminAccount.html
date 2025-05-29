@@ -5,6 +5,11 @@
 	<meta charset="UTF-8">
 	<title>アカウント一覧</title>
 
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+	
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 
@@ -16,7 +21,7 @@
 	<!--ナビ-->
 	<span th:replace="navAdmin"></span>
 
-	<main>
+	<main class="container mb-6">
 		<!-- 管理者ページ -->
 		<span th:replace="spanAdmin"></span>
 
@@ -26,6 +31,7 @@
 			<input type="text" name="keyword" th:value="${keyword}" placeholder="名前で検索">
 			<button>検索</button>
 		</form>
+		<br>
 
 		<!--		<form name="pullDownBan">-->
 		<!--			<select name="banLink" onchange="if(document.pullDownBan.banLink.href){location.href=document.pullDownBan.banLink.href;}">-->

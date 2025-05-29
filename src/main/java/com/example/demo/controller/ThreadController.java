@@ -121,7 +121,7 @@ public class ThreadController {
 		//データ取得
 		Optional<ThreadDisplay> dbDate = threadDisplayRepository.findById(id);
 		//List<Comment> commentDbDate = commentRepository.findByThreadComment(id);
-		List<CommentDisplay> commentList = commentDisplayRepository.findCommentDisplayByThreadId(id, Sort.by(Sort.Direction.ASC, "id"));
+		List<CommentDisplay> commentList = commentDisplayRepository.findCommentDisplayByThreadId(id, Sort.by(Sort.Direction.DESC, "id"));
 		
 //		//データの有無確認
 //        if(dbDate.isEmpty()) {
