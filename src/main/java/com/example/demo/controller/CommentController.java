@@ -19,6 +19,7 @@ import com.example.demo.entity.Comment;
 import com.example.demo.entity.Thread;
 import com.example.demo.entity.noTable.CommentDisplay;
 import com.example.demo.model.GuestModel;
+import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.CommentDisplayRepository;
 import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.ThreadRepository;
@@ -33,7 +34,10 @@ public class CommentController {
 	ThreadRepository threadRepository;
 	
 	@Autowired
-	CommentDisplayRepository commDisplayRepository;
+	CommentDisplayRepository commentDisplayRepository;
+	
+	@Autowired
+	CategoryRepository categoryRepository;
 	
 	@Autowired
 	GuestModel guestModel;
@@ -209,7 +213,9 @@ public class CommentController {
 	
 	//自分のコメント一覧表示
 	@GetMapping("/comment")
-	public String index(Model model) {
+	public String index(
+			@RequestParam(name="sort",defaultValue = "Desc")String sort,
+			Model model) {
 		
 		//ログインしてない時のアクセス不可
 		if(guestModel.getId() == null) {
@@ -220,7 +226,15 @@ public class CommentController {
 		//List<Comment> commentList = new ArrayList<Comment>();
 		//commentList = commentRepository.findByGuestId(guestId);
 		List<CommentDisplay> commentList = new ArrayList<CommentDisplay>();
-		commentList = commDisplayRepository.findCommentDisplayByUserId(guestId, Sort.by(Sort.Direction.ASC, "user_Id"));
+		//commentList = commDisplayRepository.findCommentDisplayByUserId(guestId, Sort.by(Sort.Direction.ASC, "user_Id"));
+		
+		if(("Asc").equals(sort)) {
+			commentList = commentDisplayRepository.findCommentDisplayByUserId(guestId,Sort.by(Sort.Direction.ASC, "comment_create_date"));
+		}
+		else {
+			commentList = commentDisplayRepository.findCommentDisplayByUserId(guestId,Sort.by(Sort.Direction.DESC, "comment_create_date"));
+		}
+		
 		model.addAttribute("commentList", commentList);
 		
 		

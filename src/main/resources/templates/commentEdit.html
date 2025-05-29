@@ -1,25 +1,76 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="UTF-8">
 	<title>コメント編集</title>
+
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+	<!-- 自分の独自CSS -->
+
+	<!-- JSライブラリ -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
 </head>
+
 <body>
 	<!-- ヘッダ -->
-	<span th:replace="header"></span>
-	
-	<h4>コメント編集</h4>
-	<form method="post" th:action="|/comment/${comment.id}/edit|">
-		<table border="1">
-			<tr>
-				<th>内容</th>
-				<td><textarea name="body">[[${comment.body}]]</textarea></td>
-			</tr>
-		</table>
-		<button>コメント編集</button>
-	</form>
-	<form method="post" th:action="|/comment/${comment.id}/delete|">
-		<button>コメント削除</button>
-	</form>
+	<header th:replace="header"></header>
+	<hr>
+
+	<!-- ナビ -->
+	<span th:replace="navThread"></span>
+	<hr>
+
+	<main class="container mb-6">
+		<br>
+		<br>
+		<div class="card mb-6">
+			<div class="card-header bg-info text-white text-center">
+				<h5 class="mb-0">コメント編集</h5>
+			</div>
+			<div class="card-body px-4 pt-2 m-1">
+				<form method="post" th:action="|/comment/${comment.id}/edit|">
+					<div class="container">
+						<div class="row text-left shadow-sm rounded">
+							<div class="col-1 m-4">
+								<label class="form-label  fw-semibold">
+									内容
+								</label>
+							</div>
+							<div class="col-6 m-4  text-left">
+								<textarea name="body"
+									class="form-control  text-left justify-content-start">[[${comment.body}]]</textarea>
+							</div>
+						</div>
+					</div>
+					<div class="container">
+						<div class="row mt-2">
+							<div class="col-1"></div>
+							<div class="col-2">
+								<button class="btn btn-warning-bg-subtle m-1 justify-content-center">コメント変更</button>
+							</div>
+						</div>
+					</div>
+				</form>
+				<div class="container">
+					<div class="row mb-3">
+						<div class="col-1"></div>
+						<div class="col-2">
+							<form method="post" th:action="|/comment/${comment.id}/delete|">
+								<button class="btn btn-warning-bg-subtle mt-3">コメント削除</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
 </body>
+
 </html>

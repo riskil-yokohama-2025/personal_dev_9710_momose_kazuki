@@ -1,43 +1,69 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="UTF-8">
 	<title>新規登録</title>
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+	<!-- 自分の独自CSS -->
+
+	<!-- JSライブラリ -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
 </head>
+
 <body>
 
 	<span th:replace="headerLogin"></span>
 
-	<main>
+	<main class="container mb-6">
 		<!--中央-->
-		<h3>ユーザー新規登録</h3>
-	
-		<ul th:if="${errorList != null && errorList.size > 0}">
-			<li th:each="error : ${errorList}" style="color: red;">
-					[[${error}]]
-			</li>
-		</ul>
-		
-		<form method="post" action="/user/join">
-			<table>	
-				<tr>
-					<td><input type="text" name="name" placeholder="ニックネーム（20文字以内）"></td>
-				</tr>
-				<tr>
-					<td><input type="text" name="email" placeholder="メールアドレス"></td>
-				</tr>
-				<tr>
-					<td><input type="password" name="password" placeholder="パスワード（20文字以内）"></td>
-				</tr>
-				<tr>
-					<td><input type="password" name="passwordConfirm" placeholder="パスワード（確認）"></td>
-				</tr>
-			</table>
-			<button>新規登録</button>
-			
-		</form>
-		
+		<h3 class="fw-bold m-3">ユーザー新規登録</h3>
+
+		<div class="card shadow-lg border-0 rounded-4">
+			<div class="card-body px-4 pt-2 m-1">
+				<ul th:if="${errorList != null && errorList.size > 0}" class="list-group-flush">
+					<li th:each="error : ${errorList}" style="color: red;" class="list-group-item">
+						[[${error}]]
+					</li>
+				</ul>
+			</div>
+			<div class="card-body px-4 pt-2">
+
+				<form method="post" action="/user/join" class="form-group">
+					<table>
+						<tr>
+							<td><i class="bi bi-pen"></i>
+								<input type="text" name="name" placeholder="ニックネーム（20文字以内）" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<td><i class="bi bi-envelope"></i>
+								<input type="text" name="email" placeholder="メールアドレス（50文字以内）" class="form-control"></td>
+						</tr>
+						<tr>
+							<td><i class="bi bi-key"></i>
+								<input type="password" name="password" placeholder="パスワード（20文字以内）" class="form-control">
+							</td>
+						</tr>
+						<tr>
+							<td><input type="password" name="passwordConfirm" placeholder="パスワード（確認）"
+									class="form-control"></td>
+						</tr>
+					</table>
+					<button class="btn btn-warning-bg-subtle mt-3">新規登録</button>
+
+				</form>
+			</div>
+		</div>
+		</div>
 	</main>
-	
 </body>
+
 </html>

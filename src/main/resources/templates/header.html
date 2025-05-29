@@ -1,26 +1,29 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
 <header>
 <!--	<div class="container text-center bg-info text-white" >-->
 	<div class="container text-center bg-info text-white" >
 		<div class="row justify-content-center">
-			<div class="col-3"></div>
+			<div class="col-4"></div>
 				
-			<div class="col-6">	
+			<div class="col-4">	
 				<div >
 					<h1><a href="/thread" style="color: aliceblue;">掲示板</h1>
 				</div>
 			</div>
 			
-			<div class="col-3">
+			<div class="col-4">
 				<div class="container" >
 					<div class="row">
 						<div class="col justify-content-end">
-							<a href="/user/setting/account" style="color: aliceblue;">ユーザ設定</a>
+							<a href="/user/setting/account" style="color: aliceblue;"><i class="bi bi-house-door"></i>ユーザ設定</a>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col justify-content-end">
 							ログイン中：「[[${@guestModel.name}]]」
 							<a href="/logout" style="color: aliceblue;">ログアウト</a>
+							<i class="bi bi-box-arrow-right"></i>
 						</div>
 					</div>
 				</div>

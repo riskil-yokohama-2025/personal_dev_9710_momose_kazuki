@@ -1,39 +1,78 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>ユーザー設定</title>
+	<meta charset="UTF-8">
+	<title>ユーザー設定</title>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+	<!-- 自分の独自CSS -->
+
+	<!-- JSライブラリ -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
 </head>
+
 <body>
 	<!--ヘッダー-->
 	<span th:replace="header"></span>
 	<hr>
 
-	<main>
-		<!--ナビ-->
-		<span th:replace="navSettingAccount"></span>
-		<hr>
+	<!--ナビ-->
+	<span th:replace="navSettingAccount"></span>
+	<hr>
 
-		<h4>メールアドレス変更</h4>
-		
-		<!-- エラー用ナビ -->
-		<span th:replace="navError"></span>
-		
-		<!--メールアドレス変更フォーム-->
-		<form method="post" action="/user/setting/email">
-			<table border="1">
-				<tr>
-					<th>メールアドレス</th>
-					<td>
-						<input type="text" name="email" th:value="${guest.email}">
-					</td>
-				</tr>
-			</table>
-			
-			<button>変更</button>
-		</form>
-		
+	<main class="container mb-6">
+
+		<div class="card shadow rounded-4 mb-4">
+			<div class="card-header bg-info text-white text-center">
+				<h4 class="mb-0">Edit E-Mail
+				</h4>
+			</div>
+			<div class="card-body">
+				<div class="card shadow rounded-left px-2 my-3">
+					<div class="card-body position-relative pb-4">
+
+						<!-- エラー用ナビ -->
+						<div th:replace="navError"></div>
+
+						<!--メールアドレス変更フォーム-->
+						<form method="post" action="/user/setting/email">
+							<div class="card-text">
+								<div class="container">
+									<div class="row mx-2">
+										<div class="col-1">
+										</div>
+										<div class="col-3 justify-content-start m-1">
+											<span>
+												<i class="bi bi-envelope"></i>&nbspメールアドレス
+											</span>
+										</div>
+										<div class="col-4 justify-content-start m-1">
+											<input type="text" name="email" th:value="${guest.email}"
+												class="form-control fw-semibold">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="container">
+								<div class="row mx-2">
+									<div class="col-4"></div>
+									<div class="col-2 justify-content-center">
+										&nbsp&nbsp<button class="btn btn-warning-bg-subtle mt-3">変更</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</main>
-
 </body>
+
 </html>

@@ -1,5 +1,5 @@
-<span>
-	<ul th:if="${errorList != null && errorList.size() > 0}">
-		<li th:each="error : ${errorList}" style="color: red;">[[${error}]]</li>
+<div>
+	<ul th:if="${errorList != null && errorList.size()>0}" class="list-group-flush">
+		<li th:each="error : ${errorList}" style="color: red;"  class="list-group-item">[[${error}]]</li>
 	</ul>
-</span>
+</div>

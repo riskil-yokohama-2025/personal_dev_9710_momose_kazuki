@@ -4,11 +4,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>作成したスレッド</title>
-	
+
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	
+
 	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 </head>
 
@@ -17,19 +18,20 @@
 	<!-- ヘッダ -->
 	<span th:replace="header"></span>
 	<hr>
-	
+
 	<!-- ナビ -->
 	<span th:replace="navThread"></span>
 	<hr>
-	
+
 	<main class="container mb-6">
 		<!--  -->
 		<!-- プルダウン -->
-		
-		
+
+
 		<form name="pullDown" action="/thread/mythread">
 			<div class="row justify-content-between mx-1">
 				<div class="col-4 btn-group">
+					<i class="bi bi-sliders2"></i>&nbsp
 					<select name="categoryId" onChange="changeSelect()">
 						<option value="">全て</option>
 						<hr>
@@ -38,6 +40,7 @@
 					</select>
 				</div>
 				<div class="col-2 btn-group">
+					<i class="bi bi-sort-down"></i>&nbsp
 					<select name="sort" onChange="changeSelect()">
 						<option value="">並び替え</option>
 						<hr>
@@ -47,20 +50,20 @@
 				</div>
 			</div>
 		</form>
-		
+
 		<br>
 		<div class="card mb-6">
 			<div class="card-header bg-info text-white text-center">
 				<h5 class="mb-0">The Topic You Created</h5>
 			</div>
 			<div class="card-body">
-				<div th:if="${threadList == null || threadList.size() == 0}">	
-					自分が投稿したスレッドはありません
+				<div th:if="${threadList == null || threadList.size() == 0}">
+					自分が作成したスレッドはありません
 				</div>
-				<thdiv th:if="${threadList != null && threadList.size() > 0}">
+				<div th:if="${threadList != null && threadList.size() > 0}">
 					<div class="card-body position-relative pb-4 mx-4">
 						<div class="card-text">
-							<div class="container" >
+							<div class="container">
 								<div class="row">
 									<div class="col-3 justify-content-end">
 										<span>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp投稿時間</span>
@@ -78,60 +81,62 @@
 										<span>削除</span>
 									</div>
 								</div>
-							</div>	
+							</div>
 						</div>
 					</div>
-					
+
 					<th:block th:each="thread : ${threadList}" class="col">
-					<div class="card shadow rounded-left px-5 my-3">
-						<div class="card-body position-relative pb-4">
-							<div class="container" >
-								<div class="row">
-									<div class="col-3 justify-content-end">
+						<div class="card shadow rounded-left px-5 my-3">
+							<div class="card-body position-relative pb-4">
+								<div class="container">
+									<div class="row">
+										<div class="col-3 justify-content-end mt-1">
 											<span>[[${#temporals.format(thread.createDate, 'yyyy/MM/dd HH:mm')}]]</span>
 										</div>
-										<div class="col-3 justify-content-end">
+										<div class="col-3 justify-content-end mt-1">
 											<h6>[[${thread.title}]]</h6>
 										</div>
-										<div class="col-2 justify-content-end">
+										<div class="col-2 justify-content-end mt-1">
 											<span>[[${thread.categoryName}]]</span>
 										</div>
 										<div class="col-2 justify-content-end">
 											<a th:href="|/thread/${thread.id}/edit|">
-												&nbsp<button>変更</button>
+												&nbsp<button class="btn btn-warning-bg-subtle">変更</button>
 											</a>
 										</div>
 										<div class="col-2 justify-content-end">
-											<form method="post" th:action="|/thraed/${thread.id}/delete|" th:id="|deleteForm${thread.id}|">
-												&nbsp&nbsp&nbsp<button type="button" th:onclick="|submitCheck(${thread.id})|">削除</button>
+											<form method="post" th:action="|/thraed/${thread.id}/delete|"
+												th:id="|deleteForm${thread.id}|">
+												&nbsp&nbsp&nbsp<button type="button"
+													th:onclick="|submitCheck(${thread.id})|" class="btn btn-warning-bg-subtle ">削除</button>
 											</form>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					</th:block>
-				</div>
 			</div>
+			</th:block>
+		</div>
+		</div>
 		</div>
 	</main>
 	<script>
 		function changeSelect() {
 			$('form[name="pullDown"]').submit();
 		}
-			
-		function submitCheck(threadId){
-			if(window.confirm('本当に削除してもよろしいですか？')){
+
+		function submitCheck(threadId) {
+			if (window.confirm('本当に削除してもよろしいですか？')) {
 				$(`#deleteForm${threadId}`).submit();
 				//return true; 自動でtrue返信してくれるから記述いらない
-			}else{
+			} else {
 				//window.alert(`キャンセル`)
 				//return false; 自動でtrue返信してくれるから記述いらない
 			}
 		}
 
-			
+
 	</script>
 
 	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>

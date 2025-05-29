@@ -54,7 +54,7 @@ public interface GuestRepository extends JpaRepository<Guest, Integer>{
 	@Query(value = ""
 			+ "SELECT * FROM guest "
 			+ "WHERE ban_flag = ?1 "
-			+ "  AND WHERE name LIKE ?2", nativeQuery = true)
+			+ "  AND name LIKE ?2", nativeQuery = true)
 	List<Guest> findByBanFlagAndName(Boolean banFlag, String keyword, Sort sort);
 	
 

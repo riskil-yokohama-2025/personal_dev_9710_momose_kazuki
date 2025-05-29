@@ -50,4 +50,15 @@ public interface CommentDisplayRepository extends JpaRepository<CommentDisplay, 
 			+ " WHERE com.user_id= ?"
 			+ " AND com.delete_flag = false",nativeQuery = true)
 	List<CommentDisplay>findCommentDisplayByUserId(Integer userId, Sort sort);
+	
+	//userIdによる絞り込み
+	@Query(value=""
+			+ BASE_SELECT
+			+ " FROM comment com "
+			+ " LEFT OUTER JOIN thread as t ON com.thread_id = t.id"
+			+ " INNER JOIN guest as g ON com.user_id = g.id"
+			+ " WHERE com.user_id= ?1"
+			+ " AND com.thread_id"
+			+ " AND com.delete_flag = false",nativeQuery = true)
+	List<CommentDisplay>findCommentDisplayByUserIdAndCategoryId(Integer userId, Integer threadId,Sort sort);
 }

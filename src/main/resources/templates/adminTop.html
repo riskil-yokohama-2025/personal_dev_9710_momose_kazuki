@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="UTF-8">
 	<title>管理者ホームページ</title>
 </head>
+
 <body>
 	<!-- ヘッダ -->
 	<span th:replace="headerAdmin"></span>
-	
+
 	<main>
-		<h4>管理者ページ</h4>
+		<!--		<h4>管理者ページ</h4>-->
+		<!-- 管理者ページ -->
+		<span th:replace="spanAdmin"></span>
 		<form method="get" action="/admin/account">
 			<button>アカウント一覧</button>
 		</form>
@@ -20,4 +24,5 @@
 	</main>
 
 </body>
+
 </html>

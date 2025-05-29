@@ -1,22 +1,57 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="UTF-8">
 	<title>コメント投稿</title>
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+	<!-- 自分の独自CSS -->
+
+	<!-- JSライブラリ -->
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
 </head>
+
 <body>
 	<!-- ヘッダ -->
-	<span th:replace="header"></span>
-	
-	<h4>コメント投稿</h4>
-	<form method="post" th:action="|/comment/${thread.id}/add|">
-		<table border="1">
-			<tr>
-				<th>内容</th>
-				<td><textarea name="body"></textarea></td>
-			</tr>
-		</table>
-		<button>コメント投稿</button>
-	</form>
+	<header th:replace="header"></header>
+	<hr>
+
+	<!-- ナビ -->
+	<span th:replace="navThread"></span>
+	<hr>
+
+	<main class="container mb-6">
+		<br>
+		<br>
+		<div class="card mb-6">
+			<div class="card-header bg-info text-white text-center">
+				<h5 class="mb-0">コメント投稿</h5>
+			</div>
+			<div class="card-body px-4 pt-2 m-1">
+				<form method="post" th:action="|/comment/${thread.id}/add|">
+					<div class="container">
+						<div class="row text-left shadow-sm rounded">
+							<div class="col-3 m-4">
+								<label class="form-label  fw-semibold">
+									内容
+								</label>
+							</div>
+							<div class="col-6 m-4  text-left">
+								<textarea name="body" class="form-control  text-left justify-content-start"></textarea>
+							</div>
+						</div>
+					</div>
+					<button class="btn btn-warning-bg-subtle mt-3">コメント投稿</button>
+				</form>
+			</div>
+		</div>
+	</main>
 </body>
+
 </html>

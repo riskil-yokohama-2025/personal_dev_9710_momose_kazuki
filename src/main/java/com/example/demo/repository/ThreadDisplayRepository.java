@@ -165,9 +165,9 @@ public interface ThreadDisplayRepository extends JpaRepository<ThreadDisplay, In
 			+ "	        GROUP BY thread_id"
 			+ "	    ) as com"
 			+ "	    ON t.id = com.thread_id"
-			+ "  WHERE g.name = ?1 "
+			+ "  WHERE t.user_id = ?1 "
 			+ "	    AND t.delete_flag = false", nativeQuery = true) //「category c」「guest g」は as の省略あり
-	List<ThreadDisplay> findByCreator(String creator);
+	List<ThreadDisplay> findByCreator(Integer creatorId);
 	
 	@Query(value = ""
 			+ BASE_SELECT
@@ -182,9 +182,9 @@ public interface ThreadDisplayRepository extends JpaRepository<ThreadDisplay, In
 			+ "	        GROUP BY thread_id"
 			+ "	    ) as com"
 			+ "	    ON t.id = com.thread_id"
-			+ "  WHERE g.name = ?1 "
+			+ "  WHERE t.user_id = ?1 "
 			+ "	    AND t.delete_flag = false", nativeQuery = true) //「category c」「guest g」は as の省略あり
-	List<ThreadDisplay> findByCreator(String creator, Sort sort);
+	List<ThreadDisplay> findByCreator(Integer creatorId, Sort sort);
 
 	@Query(value = ""
 			+ BASE_SELECT
@@ -199,10 +199,10 @@ public interface ThreadDisplayRepository extends JpaRepository<ThreadDisplay, In
 			+ "	        GROUP BY thread_id"
 			+ "	    ) as com"
 			+ "	    ON t.id = com.thread_id"
-			+ "  WHERE g.name = ?1 "
+			+ "  WHERE t.user_id = ?1 "
 			+ "	    AND t.delete_flag = false"
 			+ "     AND c.id = :categoryId ", nativeQuery = true) //「category c」「guest g」は as の省略あり
-	List<ThreadDisplay> findByCreatorAndCategoryId(String creator, @Param("categoryId") Integer categoryId, Sort sort);
+	List<ThreadDisplay> findByCreatorAndCategoryId(Integer creatorId, @Param("categoryId") Integer categoryId, Sort sort);
 
 	
 //	@Query(value = ""

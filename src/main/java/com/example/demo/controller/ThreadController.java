@@ -238,7 +238,8 @@ public class ThreadController {
 		}
 		
 		//Integer guestId = guestModel.getId();
-		String guestName = guestModel.getName();
+		//String guestName = guestModel.getName();
+		Integer guestId = guestModel.getId();
 		//List<Thread> threadList = new ArrayList<Thread>();
 		List<ThreadDisplay> threadList = new ArrayList<ThreadDisplay>();
 		//threadList = threadDisplayRepository.findByCreator(guestName);
@@ -247,24 +248,24 @@ public class ThreadController {
 		model.addAttribute("categoryId", categoryId);
 		
 		if(categoryId != null && ("Asc").equals(sort)) {
-			threadList = threadDisplayRepository.findByCreatorAndCategoryId(guestName, categoryId, Sort.by(Sort.Direction.ASC, "last_update_date"));
+			threadList = threadDisplayRepository.findByCreatorAndCategoryId(guestId, categoryId, Sort.by(Sort.Direction.ASC, "last_update_date"));
 		}
 		else if(categoryId != null && ("Desc").equals(sort)) {
-			threadList = threadDisplayRepository.findByCreatorAndCategoryId(guestName, categoryId, Sort.by(Sort.Direction.DESC, "last_update_date"));
+			threadList = threadDisplayRepository.findByCreatorAndCategoryId(guestId, categoryId, Sort.by(Sort.Direction.DESC, "last_update_date"));
 		}
 		else if(categoryId != null) {
 			//threadList = threadRepository.findByCategoryId(categoryId);
-			threadList = threadDisplayRepository.findByCreatorAndCategoryId(guestName, categoryId, Sort.by(Sort.Direction.DESC, "last_update_date"));
+			threadList = threadDisplayRepository.findByCreatorAndCategoryId(guestId, categoryId, Sort.by(Sort.Direction.DESC, "last_update_date"));
 		}
 //		else if (categoryId != null && ("Desc").equals(sort)) {
 //			threadDisplay = threadDisplayRepository.findThreadDisplay(Sort.by(Sort.Direction.DESC, "update_date"));
 //		} 
 		else if (categoryId == null && ("Asc").equals(sort)) {
-			threadList = threadDisplayRepository.findByCreator(guestName, Sort.by(Sort.Direction.ASC, "last_update_date"));
+			threadList = threadDisplayRepository.findByCreator(guestModel.getId(), Sort.by(Sort.Direction.ASC, "last_update_date"));
 		}
 		else {
 			//threadList = threadRepository.findAll();
-			threadList = threadDisplayRepository.findByCreator(guestName, Sort.by(Sort.Direction.DESC, "last_update_date"));
+			threadList = threadDisplayRepository.findByCreator(guestModel.getId(), Sort.by(Sort.Direction.DESC, "last_update_date"));
 		}
 		
 

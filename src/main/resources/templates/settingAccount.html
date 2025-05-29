@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="UTF-8">
 	<title>ユーザー設定</title>
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+		integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	
+	<!-- 自分の独自CSS -->
+
+	<!-- JSライブラリ -->
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
 </head>
+
 <body>
 	<!-- ヘッダ -->
 	<span th:replace="header"></span>
-	
 	<hr>
 
 	<main>
@@ -17,39 +29,82 @@
 		<span th:replace="navSettingAccount"></span>
 		<hr>
 
-		<h4>アカウント</h4>
-		
-		<!-- エラー用ナビ -->
-		<span th:replace="navError"></span>
-		
-		<!--アカウント情報-->
-		<table border="1">
-			<tr>
-				<th>ニックネーム</th>
-				<td>[[${guest.name}]]</td>
-			</tr>
-			<tr>
-				<th>メールアドレス</th>
-				<td>[[${guest.email}]]</td>
-			</tr>
-		</table>
-		
-		<form method="post" action="/user/setting/delete" id="deleteForm">
-			<button type="button" th:onclick="|submitCheck()|">退会</button>
-		</form>
-	</main>
-	
-	<script>
-		function submitCheck(){
-			if(window.confirm('本当に退会してもよろしいですか？')){
-				$('#deleteForm').submit();
-				//return true; 自動でtrue返信してくれるから記述いらない
-			}else{
-				//window.alert(`キャンセル`)
-				//return false; 自動でtrue返信してくれるから記述いらない
+
+		<main class="container mb-6">
+
+			<div class="card shadow rounded-4 mb-4">
+				<div class="card-header bg-info text-white text-center">
+					<h4 class="mb-0">Your Account
+					</h4>
+				</div>
+				<div class="card-body">
+					<div class="card shadow rounded-left px-2 my-3">
+						<div class="card-body position-relative pb-4" th:if="${errorList != null && errorList.size()>0}">
+
+							<ul class="list-group-flush">
+								<li th:each="error : ${errorList}" style="color: red;" class="list-group-item">
+									[[${error}]]
+								</li>
+							</ul>
+						</div>
+						<div class="card-body position-relative pb-4">
+
+							<div class="card-text">
+								<div class="container">
+									<div class="row mx-2">
+										<div class="col-1">
+										</div>
+										<div class="col-3 justify-content-start m-1">
+											<span>
+												<i class="bi bi-pen"></i>&nbspニックネーム
+											</span>
+										</div>
+										<div class="col-4 justify-content-start m-1">
+											<span>
+												[[${guest.name}]]
+											</span>
+										</div>
+									</div>
+									<div class="row mx-2">
+										<div class="col-1">
+										</div>
+										<div class="col-3 justify-content-start m-1">
+											<span>
+												<i class="bi bi-envelope"></i>&nbspメールアドレス
+											</span>
+										</div>
+										<div class="col-4 justify-content-start m-1">
+											<span>
+												[[${guest.email}]]
+											</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col align-self-center">
+						<form method="post" action="/user/setting/delete" id="deleteForm">
+							<button type="button" th:onclick="|submitCheck()|"
+								class="btn btn-warning-bg-subtle mt-3">退会</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<script>
+			function submitCheck() {
+				if (window.confirm('本当に退会してもよろしいですか？')) {
+					$('#deleteForm').submit();
+					//return true; 自動でtrue返信してくれるから記述いらない
+				} else {
+					//window.alert(`キャンセル`)
+					//return false; 自動でtrue返信してくれるから記述いらない
+				}
 			}
-		}
-			
-	</script>
+
+		</script>
 </body>
+
 </html>
